@@ -1,4 +1,4 @@
-package QuadTree;
+package quadTree;
 
 import java.util.ArrayList;
 import processing.core.PApplet;

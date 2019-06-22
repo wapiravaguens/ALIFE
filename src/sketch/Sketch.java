@@ -1,7 +1,6 @@
 package sketch;
 
-import Aquarium.Aquarium;
-import food.FoodGenerator;
+import aquarium.Aquarium;
 import processing.core.*;
 
 public class Sketch extends PApplet {
@@ -11,12 +10,11 @@ public class Sketch extends PApplet {
     public static long time;
 
     public PImage background;
-    public FoodGenerator foodGenerator;
     public Aquarium aquarium;
 
     @Override
     public void settings() {
-        fullScreen();
+        fullScreen(P2D);
         //size(1280, 720);
     }
 
@@ -28,7 +26,7 @@ public class Sketch extends PApplet {
 
         //Globals
         showFrameRate = true;
-        foodGenerator = new FoodGenerator(this);
+        
         aquarium = new Aquarium(this);
     }
 
@@ -37,7 +35,6 @@ public class Sketch extends PApplet {
         image(background, 0, 0);
         time++;
 
-        foodGenerator.render();
         aquarium.render();
 
         info();

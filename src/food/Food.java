@@ -28,7 +28,7 @@ public class Food {
         sk.rectMode(PApplet.CENTER);
         sk.stroke(128);
         sk.fill(255, 255, 0, PApplet.map(currentLevel, 0, maxCapacity, 0, 255));
-        sk.rect((int) position.x, (int) position.y, lx, ly);
+        sk.ellipse(position.x, position.y, lx, ly);
         sk.popMatrix();
         sk.popStyle();
     }

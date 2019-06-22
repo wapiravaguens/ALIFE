@@ -1,4 +1,4 @@
-package QuadTree;
+package quadTree;
 
 public class Rectangle {
 

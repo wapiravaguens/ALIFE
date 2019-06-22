@@ -4,7 +4,7 @@ import processing.core.PApplet;
 
 public class Turtle {
 
-    public static void render(PApplet sk, String toDo, int len, float delta, int[] color, float epsilon) {
+    public static void render(PApplet sk, String toDo, float len, float delta, int[] color, float epsilon) {
         sk.pushStyle();
         sk.pushMatrix();
         sk.stroke(color[0], color[1], color[2]);

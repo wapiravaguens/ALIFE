@@ -11,7 +11,7 @@ public class FoodGenerator {
 
     public ArrayList<LSystem> plants;
     public int[] winter = {255, 255, 255};
-    public int[] summer = {32, 192, 32};
+    public int[] summer = {94, 255, 0};
 
     public ArrayList<Food> foodL;
     public boolean currentStation;
@@ -95,7 +95,7 @@ public class FoodGenerator {
                     float x = (plant.x - (n / 2 * offSetX)) + (j * offSetX);
                     float y = (plant.y - (n / 2 * offSetY)) + (i * offSetY);
                     float growth = plant.color == summer ? gSummer : gWinter;
-                    foodL.add(new Food(sk, x, y, 100, growth, 25));
+                    foodL.add(new Food(sk, x, y, 100, growth, 25)); // Set maxCapacity and CurrentLevel
                 }
             }
         }
