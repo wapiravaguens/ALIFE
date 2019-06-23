@@ -37,10 +37,13 @@ public class FoodGenerator {
         for (LSystem plant : plants) {
             plant.render();
         }
-        update();
+        //update();
     }
 
     public void update() {
+        for (Food food : foodL) {
+            food.update();
+        }
         if (Sketch.time % (timeStation * 60) == 0) {
             // Update LSystem
             int[] cNorth = currentStation ? summer : winter;

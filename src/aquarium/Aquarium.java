@@ -43,10 +43,17 @@ public class Aquarium {
         for (Predator predator : predators) {
             predator.render();
         }
-        update();
+        //update();
     }
 
     public void update() {
+        foodGenerator.update();
+        for (Prey fish : preys) {
+            fish.update();
+        }
+        for (Predator predator : predators) {
+            predator.update();
+        }
         preysEatFood();
         predatorsEatPreys();
         preysPredatorsDeath();

@@ -49,7 +49,7 @@ public class Prey {
         sk.popMatrix();
         sk.popStyle();
         info();
-        update();
+        //update();
     }
 
     public void update() {
