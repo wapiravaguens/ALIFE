@@ -7,6 +7,9 @@ public class Sketch extends PApplet {
 
     // Globals
     public static boolean showFrameRate;
+    public static boolean showPreyPredator;
+    public static boolean showEnergy;
+    
     public static long time;
 
     public PImage background;
@@ -26,6 +29,8 @@ public class Sketch extends PApplet {
 
         //Globals
         showFrameRate = true;
+        showPreyPredator= true;
+        showEnergy = false;
         
         aquarium = new Aquarium(this);
     }
@@ -45,6 +50,12 @@ public class Sketch extends PApplet {
         if (key == 'f') {
             showFrameRate = !showFrameRate;
         }
+        if (key == 'p') {
+            showPreyPredator = !showPreyPredator;
+        }
+        if (key == 'e') {
+            showEnergy = !showEnergy;
+        }
     }
 
     public static void main(String[] args) {
@@ -54,9 +65,16 @@ public class Sketch extends PApplet {
     }
 
     public void info() {
+        pushStyle();
+        textSize(32);
         if (showFrameRate) {
-            textSize(32);
             text(frameRate, 10, 40);
         }
+        if (showPreyPredator) {
+            text(frameRate, 10, 40);
+            text("Predators: " + aquarium.predators.size(), width - 250, 40);
+            text("Preys: "+ aquarium.preys.size(), width - 250, 80);
+        }
+        popStyle();
     }
 }

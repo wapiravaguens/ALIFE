@@ -31,15 +31,13 @@ public class FoodGenerator {
     }
 
     public void render() {
-        update();
-
         for (Food food : foodL) {
             food.render();
         }
-
         for (LSystem plant : plants) {
             plant.render();
         }
+        update();
     }
 
     public void update() {
@@ -85,8 +83,8 @@ public class FoodGenerator {
 //        }
 
         int n = 5;
-        int offSetX = (Food.lx + 30);
-        int offSetY = (Food.ly + 30);
+        float offSetX = (Food.d + 30);
+        float offSetY = (Food.d + 30);
 
         // Create Food
         for (LSystem plant : plants) {
