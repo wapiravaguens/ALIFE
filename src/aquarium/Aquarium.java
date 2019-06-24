@@ -49,7 +49,7 @@ public class Aquarium {
     public void update() {
         foodGenerator.update();
         for (Prey fish : preys) {
-            fish.update();
+            fish.update(qPreys, qPredators, qFoodL);
         }
         for (Predator predator : predators) {
             predator.update();
@@ -61,10 +61,10 @@ public class Aquarium {
     }
 
     public void make() {
-        for (int i = 0; i < 800; i++) {
-            preys.add(new Prey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
+        for (int i = 0; i < 500; i++) {
+            preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
         }
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 100; i++) {
             predators.add(new Predator(sk, sk.random(0, sk.width), sk.random(0, sk.height), PredatorGenotype.random()));
         }
     }
@@ -111,7 +111,7 @@ public class Aquarium {
             for (Point p : foodL) {
                 Food food = (Food) p.obj;
                 float dist = PVector.dist(prey.position, food.position);
-                if (dist > 0 && dist < (prey.size / 2 + food.d / 2)) {
+                if (dist > 0 && dist < (prey.size / 2 + food.size / 2)) {
                     float energyPlus = prey.eat(food.currentLevel);
                     food.currentLevel = food.currentLevel - energyPlus;
                 }

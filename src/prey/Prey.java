@@ -1,8 +1,12 @@
 package prey;
 
+import java.util.ArrayList;
 import java.util.Random;
 import processing.core.PApplet;
 import processing.core.PVector;
+import quadTree.Circle;
+import quadTree.Point;
+import quadTree.QuadTree;
 import sketch.Sketch;
 
 public class Prey {
@@ -20,6 +24,9 @@ public class Prey {
     // Boid
     public PVector position;
     public PVector velocity;
+    public PVector acceleration;
+    public float maxforce;    // Maximum steering force
+    public float maxspeed;    // Maximum speed
 
     public Prey(PApplet sk, float x, float y, PreyGenotype gen) {
         this.sk = sk;
@@ -33,7 +40,10 @@ public class Prey {
 
         // Boids
         this.position = new PVector(x, y);
-        this.velocity = new PVector(sk.random(-0.2f, 0.2f), sk.random(-0.2f, 0.2f));
+        this.velocity = new PVector(sk.random(-1.0f, 1.0f), sk.random(-1.0f, 1.0f));
+        this.acceleration = new PVector(0, 0);
+        this.maxspeed = 3.0f;
+        this.maxforce = 0.05f;
     }
 
     public void render() {
@@ -43,8 +53,8 @@ public class Prey {
         sk.rotate(velocity.heading() + sk.PI / 2);
         sk.rectMode(PApplet.CENTER);
         sk.fill(0, 0, 255);
-        sk.circle(0, 0, size);
-        //sk.triangle(0, -15, -5, 0, 5, 0);
+        //sk.circle(0, 0, size);
+        sk.triangle(0, -15, -5, 0, 5, 0);
         //sk.rect(0, 0, 10, 10);
         sk.popMatrix();
         sk.popStyle();
@@ -52,9 +62,28 @@ public class Prey {
         //update();
     }
 
-    public void update() {
-        position.add(velocity);
+    public void update(QuadTree preys, QuadTree predators, QuadTree foodL) {
+        Circle range = new Circle(position.x, position.y, gen.vision);
+        ArrayList<Point> predators_ = new ArrayList();
+        predators.query(range, predators_);
+        for (Point p : predators_) {
+            sk.pushStyle();
+            sk.fill(0, 255, 0);
+            sk.circle(p.x, p.y, p.size * 2);
+            sk.popStyle();
+        }
+        move(preys, predators, foodL);
         metabolism();
+    }
+
+    public void move(QuadTree preys, QuadTree predators, QuadTree foodL) {
+        // Update velocity
+        velocity.add(acceleration);
+        // Limit speed
+        velocity.limit(maxspeed);
+        position.add(velocity);
+        // Reset accelertion to 0 each cycle
+        acceleration.mult(0);
     }
 
     public void metabolism() {
@@ -71,6 +100,9 @@ public class Prey {
         if (Sketch.showEnergy) {
             energyBar();
         }
+        if (Sketch.showVision) {
+            visionCircle();
+        }
     }
 
     public void energyBar() {
@@ -79,6 +111,14 @@ public class Prey {
         sk.rect(position.x - size / 2, position.y - size / 2 - 10, size, 8);
         sk.fill(0, 255, 0);
         sk.rect(position.x - size / 2, position.y - size / 2 - 10, PApplet.map(energy, 0, gen.eMax, 0, size), 8);
+        sk.popStyle();
+    }
+
+    public void visionCircle() {
+        sk.pushStyle();
+        sk.noFill();
+        sk.stroke(159, 213, 209);
+        sk.circle(position.x, position.y, gen.vision * 2);
         sk.popStyle();
     }
 

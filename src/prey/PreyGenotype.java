@@ -7,8 +7,9 @@ public class PreyGenotype {
     public float initSize, finalSize;
     public float eLife, eRepro, eMax;
     public int expectedAge, adultAge;
+    public float vision;
 
-    public PreyGenotype(float initSize, float finalSize, float eLife, float eRepro, float eMax, int expectedAge, int adultAge) {
+    public PreyGenotype(float initSize, float finalSize, float eLife, float eRepro, float eMax, int expectedAge, int adultAge, float vision) {
         this.initSize = initSize;
         this.finalSize = finalSize;
         this.eLife = eLife;
@@ -16,6 +17,7 @@ public class PreyGenotype {
         this.eMax = eMax;
         this.expectedAge = expectedAge;
         this.adultAge = adultAge;
+        this.vision = vision;
     }
 
     public static PreyGenotype random() {
@@ -24,10 +26,11 @@ public class PreyGenotype {
         float finalSize = 65.0f - (rand.nextFloat() * 15.0f);
         float eLife = rand.nextInt(5) + 3;
         float eRepro = rand.nextInt(101) + 150;//
-        float eMax = rand.nextInt(201) + 3800;//
-        int expectedAge = rand.nextInt(201) + 1800;
+        float eMax = rand.nextInt(201) + 38000;//
+        int expectedAge = rand.nextInt(201) + 18000;
         int adultAge = rand.nextInt(51) + 150;//
-        PreyGenotype preyGenotype = new PreyGenotype(initSize, finalSize, eLife, eRepro, eMax, expectedAge, adultAge);
+        float vision = 35.0f + (rand.nextFloat() * 40.0f); 
+        PreyGenotype preyGenotype = new PreyGenotype(initSize, finalSize, eLife, eRepro, eMax, expectedAge, adultAge, vision);
         return preyGenotype;
     }
 }

@@ -9,6 +9,7 @@ public class Sketch extends PApplet {
     public static boolean showFrameRate;
     public static boolean showPreyPredator;
     public static boolean showEnergy;
+    public static boolean showVision;
     public static int speed;
 
     public static long time;
@@ -32,6 +33,7 @@ public class Sketch extends PApplet {
         showFrameRate = true;
         showPreyPredator = true;
         showEnergy = false;
+        showVision = false;
         speed = 1;
 
         aquarium = new Aquarium(this);
@@ -62,8 +64,11 @@ public class Sketch extends PApplet {
         if (key == 'e') {
             showEnergy = !showEnergy;
         }
+        if (key == 'v') {
+            showVision = !showVision;
+        }
         if (key == '+') {
-            speed = min(64, speed * 2);
+            speed = min(128, speed * 2);
         }
         if (key == '-') {
             speed = max(1, speed / 2);
@@ -88,7 +93,7 @@ public class Sketch extends PApplet {
             text("Preys: " + aquarium.preys.size(), width - 250, 80);
         }
         if (speed > 1) {
-            text("X" + speed, width - 70, height - 15);
+            text(speed + "X", width - 90, height - 15);
         }
         popStyle();
     }

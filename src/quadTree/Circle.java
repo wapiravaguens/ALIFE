@@ -21,8 +21,8 @@ public class Circle {
         if (point == null) {
             return false;
         }
-        float d = (float) Math.pow((point.x - x), 2) + (float) Math.pow((point.y - y), 2);
-        return d <= rSquared;
+        float d = (float) Math.sqrt( Math.pow((point.x - x), 2) + (float) Math.pow((point.y - y), 2) );
+        return d <= r + point.size / 2;
     }
 
     boolean intersects(Rectangle range) {

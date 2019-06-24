@@ -86,8 +86,8 @@ public class FoodGenerator {
 //        }
 
         int n = 5;
-        float offSetX = (Food.d + 30);
-        float offSetY = (Food.d + 30);
+        float offSetX = (Food.size + 30);
+        float offSetY = (Food.size + 30);
 
         // Create Food
         for (LSystem plant : plants) {

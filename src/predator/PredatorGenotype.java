@@ -24,8 +24,8 @@ public class PredatorGenotype {
         float finalSize = 65.0f - (rand.nextFloat() * 15.0f);
         float eLife = rand.nextInt(5) + 3;
         float eRepro = rand.nextInt(101) + 150;//
-        float eMax = rand.nextInt(201) + 3800;//
-        int expectedAge = rand.nextInt(201) + 1800;
+        float eMax = rand.nextInt(201) + 38000;//
+        int expectedAge = rand.nextInt(201) + 18000;
         int adultAge = rand.nextInt(51) + 150;//
         PredatorGenotype predatorGenotype = new PredatorGenotype(initSize, finalSize, eLife, eRepro, eMax, expectedAge, adultAge);
         return predatorGenotype;

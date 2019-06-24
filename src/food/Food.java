@@ -6,7 +6,7 @@ import processing.core.PVector;
 public class Food {
 
     public PApplet sk;
-    public static float d = 10;
+    public static float size = 10;
 
     public PVector position;
     public float currentLevel;
@@ -27,7 +27,7 @@ public class Food {
         sk.rectMode(PApplet.CENTER);
         sk.stroke(128);
         sk.fill(255, 255, 0, PApplet.map(currentLevel, 0, maxCapacity, 0, 255));
-        sk.circle(position.x, position.y, d);
+        sk.circle(position.x, position.y, size);
         sk.popMatrix();
         sk.popStyle();
         //update();
