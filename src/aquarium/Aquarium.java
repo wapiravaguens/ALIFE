@@ -8,6 +8,7 @@ import prey.*;
 import predator.*;
 import processing.core.PApplet;
 import processing.core.PVector;
+import turingMorph.TuringMorph;
 
 public class Aquarium {
 
@@ -22,11 +23,14 @@ public class Aquarium {
 
     public FoodGenerator foodGenerator;
     public QuadTree qFoodL;
+    
+    public static TuringMorph turingMorph;
 
     public Aquarium(PApplet sk) {
         this.sk = sk;
+        this.turingMorph = new TuringMorph(sk, 100, 100, 2000);
         limit = new Rectangle(sk.width / 2, sk.height / 2, sk.width, sk.height);
-
+        
         this.foodGenerator = new FoodGenerator(sk);
         this.preys = new ArrayList<>();
         this.predators = new ArrayList<>();
@@ -48,9 +52,12 @@ public class Aquarium {
 
     public void update() {
         foodGenerator.update();
-        for (Prey fish : preys) {
-            fish.update(qPreys, qPredators, qFoodL);
+        for (Prey prey : preys) {
+            prey.update(qPreys, qPredators, qFoodL);
         }
+//        for (int i = 0; i < 2; i++) {
+//            preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
+//        }
         for (Predator predator : predators) {
             predator.update();
         }
@@ -61,10 +68,10 @@ public class Aquarium {
     }
 
     public void make() {
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 50; i++) {
             preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
         }
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             predators.add(new Predator(sk, sk.random(0, sk.width), sk.random(0, sk.height), PredatorGenotype.random()));
         }
     }

@@ -24,8 +24,8 @@ public class FoodGenerator {
         this.currentStation = true;
 
         // Initialization
-        this.gSummer = 3.0f;
-        this.gWinter = 0.1f;
+        this.gSummer = 5.0f;
+        this.gWinter = 1.0f;
         this.timeStation = 5;
         make();
     }
@@ -96,7 +96,7 @@ public class FoodGenerator {
                     float x = (plant.x - (n / 2 * offSetX)) + (j * offSetX);
                     float y = (plant.y - (n / 2 * offSetY)) + (i * offSetY);
                     float growth = plant.color == summer ? gSummer : gWinter;
-                    foodL.add(new Food(sk, x, y, 100, growth, 25)); // Set maxCapacity and CurrentLevel
+                    foodL.add(new Food(sk, x, y, 200, growth, 25)); // Set maxCapacity and CurrentLevel
                 }
             }
         }

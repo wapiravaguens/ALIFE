@@ -58,6 +58,7 @@ public class Predator {
     }
 
     public void metabolism() {
+        age++;
         energy = energy - gen.eLife;
     }
 

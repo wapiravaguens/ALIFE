@@ -14,11 +14,11 @@
         <group>
             <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/prey/BoidPrey.java</file>
             <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/aquarium/Aquarium.java</file>
+            <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/prey/PreyGenotype.java</file>
             <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/predator/Predator.java</file>
-            <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/sketch/Sketch.java</file>
-            <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/food/Food.java</file>
             <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/food/FoodGenerator.java</file>
             <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/prey/Prey.java</file>
+            <file>file:/C:/Users/Andre/Desktop/UNAL/Vida%20Artificial/ALIFE/src/turingMorph/TuringMorph.java</file>
         </group>
     </open-files>
 </project-private>

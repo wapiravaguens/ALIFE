@@ -1,6 +1,8 @@
 package prey;
 
+import food.Food;
 import java.util.ArrayList;
+import java.util.Collections;
 import predator.Predator;
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -16,18 +18,25 @@ public class BoidPrey extends Prey {
 
     @Override
     public void move(QuadTree preys, QuadTree predators, QuadTree foodL) {
+        float foodWeight = 1.0f;
+        if (energy <= gen.eMax * 0.50) {
+            foodWeight = 10;
+        }
+        PVector food = seekFood(foodL);
         PVector avop = avoidPredators(predators);
         PVector avow = avoidWalls();
         PVector sep = separate(preys);   // Separation
         PVector ali = align(preys);      // Alignment
         PVector coh = cohesion(preys);   // Cohesion
         // Arbitrarily weight these forces
-        avop.mult(10.0f);
+        food.mult(foodWeight);
+        avop.mult(100.0f);
         avow.mult(3.0f);
         sep.mult(1.5f);
         ali.mult(1.0f);
         coh.mult(1.0f);
         // Add the force vectors to acceleration
+        applyForce(food);
         applyForce(avop);
         applyForce(avow);
         applyForce(sep);
@@ -172,6 +181,31 @@ public class BoidPrey extends Prey {
         if (count > 0) {
             sum.div(count);
             return seek(sum);  // Steer towards the position
+        } else {
+            return new PVector(0, 0);
+        }
+    }
+
+    // Cohesion
+    // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
+    PVector seekFood(QuadTree qFoodL) {
+        Circle range = new Circle(position.x, position.y, gen.vision);
+        ArrayList<Point> foodL = new ArrayList();
+        qFoodL.query(range, foodL);
+        int count = 0;
+        PVector bestFood = new PVector(0, 0);
+        float best = 0;
+        Collections.shuffle(foodL);
+        for (Point p : foodL) {
+            Food food = (Food) p.obj;
+            if (food.currentLevel > best) {
+                best = food.currentLevel;
+                bestFood = food.position;
+                count++;
+            }
+        }
+        if (count > 0) {
+            return seek(bestFood);  // Steer towards the position
         } else {
             return new PVector(0, 0);
         }
