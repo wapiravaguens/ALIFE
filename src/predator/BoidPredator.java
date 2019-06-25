@@ -23,7 +23,7 @@ public class BoidPredator extends Predator {
         PVector coh = cohesion(predators);   // Cohesion
         // Arbitrarily weight these forces
         avow.mult(3.0f);
-        hunt.mult(5.0f);
+        hunt.mult(10.0f);
         sep.mult(1.5f);
         ali.mult(1.0f);
         coh.mult(1.0f);

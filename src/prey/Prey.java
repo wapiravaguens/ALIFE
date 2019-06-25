@@ -1,5 +1,6 @@
 package prey;
 
+import affineTransformation.AffineTransformation;
 import aquarium.Aquarium;
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,7 +25,7 @@ public class Prey {
     public float energy;
     public float size;
     public boolean sex;
-
+    
     // Boid
     public PVector position;
     public PVector velocity;
@@ -56,10 +57,8 @@ public class Prey {
         sk.pushStyle();
 
         sk.pushMatrix();
+        AffineTransformation.transform(sk, this);
         float theta = velocity.heading();
-        sk.translate(position.x, position.y);
-        sk.scale(sk.map(size, gen.initSize, gen.finalSize, gen.initSize  / 50, gen.finalSize / 50), sk.map(size, gen.initSize, gen.finalSize, gen.initSize / 50, gen.finalSize / 50));
-        sk.translate(-position.x, -position.y);
         if (theta < PApplet.PI / 2 && theta > -PApplet.PI / 2) {
             sk.scale(-1.0f, 1.0f);
             sk.translate(-position.x, position.y);

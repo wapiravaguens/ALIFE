@@ -65,13 +65,31 @@ public class Aquarium {
         predatorsEatPreys();
         preysPredatorsDeath();
         updateQTrees();
+
+        double sum = 0;
+        double sum2 = 0;
+        double sum3 = 0;
+        if (sketch.Sketch.time % 60 == 0) {
+            for (Prey prey : preys) {
+                sum += prey.gen.vision;
+                sum2 += prey.gen.eLife;
+                sum3 += prey.gen.finalSize;
+            }
+            sum = sum / preys.size();
+            sum2 = sum2 / preys.size();
+            sum3 = sum3 / preys.size();
+            System.out.println("Mean Vision: " +  sum);
+            System.out.println("Mean E: " +  sum2);
+            System.out.println("Size: " + sum3);
+            System.out.println("");
+        }
     }
 
     public void make() {
-        for (int i = 0; i < 300; i++) {
+        for (int i = 0; i < 200; i++) {
             preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
         }
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 20; i++) {
             predators.add(new BoidPredator(sk, sk.random(0, sk.width), sk.random(0, sk.height), PredatorGenotype.random()));
         }
     }
@@ -157,7 +175,11 @@ public class Aquarium {
                             if (dist > 0 && dist < (prey1.size / 2 + prey2.size / 2)) {
                                 prey1.reproduction();
                                 prey2.reproduction();
-                                iter.add(new BoidPrey(sk, prey1.position.x, prey1.position.y, prey1.gen));
+                                PreyGenotype[] childs = PreyGenotype.crossover(prey1.gen, prey2.gen);
+                                childs[0].mutate();
+                                childs[1].mutate();
+                                iter.add(new BoidPrey(sk, prey1.position.x, prey1.position.y, childs[0]));
+                                iter.add(new BoidPrey(sk, prey1.position.x, prey1.position.y, childs[1]));
                                 break;
                             }
                         }
@@ -183,7 +205,11 @@ public class Aquarium {
                             if (dist > 0 && dist < (predator1.size / 2 + predator2.size / 2)) {
                                 predator1.reproduction();
                                 predator2.reproduction();
-                                iter.add(new BoidPredator(sk, predator1.position.x, predator1.position.y, predator1.gen));
+                                PredatorGenotype[] childs = PredatorGenotype.crossover(predator1.gen, predator2.gen);
+                                childs[0].mutate();
+                                childs[1].mutate();
+                                iter.add(new BoidPredator(sk, predator1.position.x, predator1.position.y, childs[0]));
+                                iter.add(new BoidPredator(sk, predator1.position.x, predator1.position.y, childs[1]));
                                 break;
                             }
                         }
