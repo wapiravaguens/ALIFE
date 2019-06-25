@@ -1,44 +1,35 @@
-package prey;
+package predator;
 
-import food.Food;
 import java.util.ArrayList;
-import java.util.Collections;
-import predator.Predator;
+import prey.Prey;
 import processing.core.PApplet;
 import processing.core.PVector;
 import quadTree.Circle;
 import quadTree.Point;
 import quadTree.QuadTree;
 
-public class BoidPrey extends Prey {
+public class BoidPredator extends Predator {
 
-    public BoidPrey(PApplet sk, float x, float y, PreyGenotype gen) {
+    public BoidPredator(PApplet sk, float x, float y, PredatorGenotype gen) {
         super(sk, x, y, gen);
     }
 
     @Override
     public void move(QuadTree preys, QuadTree predators, QuadTree foodL) {
-        float foodWeight = 1.0f;
-        if (energy <= gen.eMax * 0.50) {
-            foodWeight = 10;
-        }
-        PVector food = seekFood(foodL);
-        PVector avop = avoidPredators(predators);
         PVector avow = avoidWalls();
-        PVector sep = separate(preys);   // Separation
-        PVector ali = align(preys);      // Alignment
-        PVector coh = cohesion(preys);   // Cohesion
+        PVector hunt = hunt(preys);   // Cohesion
+        PVector sep = separate(predators);   // Separation
+        PVector ali = align(predators);      // Alignment
+        PVector coh = cohesion(predators);   // Cohesion
         // Arbitrarily weight these forces
-        food.mult(foodWeight);
-        avop.mult(100.0f);
         avow.mult(3.0f);
+        hunt.mult(5.0f);
         sep.mult(1.5f);
         ali.mult(1.0f);
         coh.mult(1.0f);
         // Add the force vectors to acceleration
-        applyForce(food);
-        applyForce(avop);
         applyForce(avow);
+        applyForce(hunt);
         applyForce(sep);
         applyForce(ali);
         applyForce(coh);
@@ -53,59 +44,18 @@ public class BoidPrey extends Prey {
         borders();
     }
 
-    // Avoid
-    // Method checks for walls
-    public PVector avoidPredators(QuadTree qPredators) {
-        Circle range = new Circle(position.x, position.y, gen.vision);
-        ArrayList<Point> predators = new ArrayList();
-        qPredators.query(range, predators);
-        PVector steerTotal = new PVector(0, 0);
-        for (Point p : predators) {
-            Predator predator = (Predator) p.obj;
-            float d = PVector.dist(position, predator.position);
-            if ((d > 0) && (d < gen.vision * 2)) {
-                PVector steer = new PVector(); // creates vector for steering
-                steer.set(PVector.sub(position, predator.position)); // steering vector points away from
-                steer.mult(1 / PApplet.sq(PVector.dist(position, predator.position)));
-                steerTotal.add(steer);
-            }
-        }
-        return steerTotal.limit(maxforce);
-    }
-
-    // AvoidWalls
-    // Method checks for walls
-    public PVector avoidWalls() {
-        PVector[] targets = {new PVector(position.x, 0),
-            new PVector(0, position.y),
-            new PVector(position.x, sk.height),
-            new PVector(sk.width, position.y)
-        };
-        PVector steerTotal = new PVector(0, 0);
-        for (PVector target : targets) {
-            float d = PVector.dist(position, target);
-            if ((d > 0) && (d < gen.vision)) {
-                PVector steer = new PVector(); // creates vector for steering
-                steer.set(PVector.sub(position, target)); // steering vector points away from
-                steer.mult(1 / PApplet.sq(PVector.dist(position, target)));
-                steerTotal.add(steer);
-            }
-        }
-        return steerTotal.limit(maxforce);
-    }
-
     // Separation
     // Method checks for nearby boids and steers away
-    public PVector separate(QuadTree qPreys) {
+    public PVector separate(QuadTree qPredators) {
         float desiredseparation = 25.0f;
         PVector steer = new PVector(0, 0);
         int count = 0;
         // For every boid in the system, check if it's too close
         Circle range = new Circle(position.x, position.y, gen.vision);
-        ArrayList<Point> preys = new ArrayList();
-        qPreys.query(range, preys);
-        for (Point p : preys) {
-            Prey other = (Prey) p.obj;
+        ArrayList<Point> predators = new ArrayList();
+        qPredators.query(range, predators);
+        for (Point p : predators) {
+            Predator other = (Predator) p.obj;
             float d = PVector.dist(position, other.position);
             // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
             if ((d > 0) && (d < desiredseparation)) {
@@ -134,15 +84,15 @@ public class BoidPrey extends Prey {
 
     // Alignment
     // For every nearby boid in the system, calculate the average velocity
-    public PVector align(QuadTree qPreys) {
+    public PVector align(QuadTree qPredators) {
         float neighbordist = 50;
         PVector sum = new PVector(0, 0);
         int count = 0;
         Circle range = new Circle(position.x, position.y, gen.vision);
-        ArrayList<Point> preys = new ArrayList();
-        qPreys.query(range, preys);
-        for (Point p : preys) {
-            Prey other = (Prey) p.obj;
+        ArrayList<Point> predators = new ArrayList();
+        qPredators.query(range, predators);
+        for (Point p : predators) {
+            Predator other = (Predator) p.obj;
             float d = PVector.dist(position, other.position);
             if ((d > 0) && (d < neighbordist)) {
                 sum.add(other.velocity);
@@ -163,15 +113,15 @@ public class BoidPrey extends Prey {
 
     // Cohesion
     // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
-    public PVector cohesion(QuadTree qPreys) {
+    public PVector cohesion(QuadTree qPredators) {
         float neighbordist = 50;
         PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all positions
         int count = 0;
         Circle range = new Circle(position.x, position.y, gen.vision);
-        ArrayList<Point> preys = new ArrayList();
-        qPreys.query(range, preys);
-        for (Point p : preys) {
-            Prey other = (Prey) p.obj;
+        ArrayList<Point> predators = new ArrayList();
+        qPredators.query(range, predators);
+        for (Point p : predators) {
+            Predator other = (Predator) p.obj;
             float d = PVector.dist(position, other.position);
             if ((d > 0) && (d < neighbordist)) {
                 sum.add(other.position); // Add position
@@ -186,29 +136,47 @@ public class BoidPrey extends Prey {
         }
     }
 
-    // seekFood
+    // Hunt
     // For the average position (i.e. center) of all nearby boids, calculate steering vector towards that position
-    public PVector seekFood(QuadTree qFoodL) {
-        Circle range = new Circle(position.x, position.y, gen.vision);
-        ArrayList<Point> foodL = new ArrayList();
-        qFoodL.query(range, foodL);
+    public PVector hunt(QuadTree qPreys) {
+        PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all positions
         int count = 0;
-        PVector bestFood = new PVector(0, 0);
-        float best = 0;
-        Collections.shuffle(foodL);
-        for (Point p : foodL) {
-            Food food = (Food) p.obj;
-            if (food.currentLevel > best) {
-                best = food.currentLevel;
-                bestFood = food.position;
-                count++;
-            }
+        Circle range = new Circle(position.x, position.y, gen.vision);
+        ArrayList<Point> preys = new ArrayList();
+        qPreys.query(range, preys);
+        for (Point p : preys) {
+            Prey other = (Prey) p.obj;
+            sum.add(other.position); // Add position
+            count++;
+
         }
         if (count > 0) {
-            return seek(bestFood);  // Steer towards the position
+            sum.div(count);
+            return seek(sum);  // Steer towards the position
         } else {
             return new PVector(0, 0);
         }
+    }
+
+    // AvoidWalls
+    // Method checks for walls
+    public PVector avoidWalls() {
+        PVector[] targets = {new PVector(position.x, 0),
+            new PVector(0, position.y),
+            new PVector(position.x, sk.height),
+            new PVector(sk.width, position.y)
+        };
+        PVector steerTotal = new PVector(0, 0);
+        for (PVector target : targets) {
+            float d = PVector.dist(position, target);
+            if ((d > 0) && (d < gen.vision)) {
+                PVector steer = new PVector(); // creates vector for steering
+                steer.set(PVector.sub(position, target)); // steering vector points away from
+                steer.mult(1 / PApplet.sq(PVector.dist(position, target)));
+                steerTotal.add(steer);
+            }
+        }
+        return steerTotal.limit(maxforce);
     }
 
     public void applyForce(PVector force) {
@@ -243,5 +211,4 @@ public class BoidPrey extends Prey {
             position.y = sk.height - size / 2;
         }
     }
-
 }

@@ -58,7 +58,7 @@ public class Prey {
         sk.pushMatrix();
         float theta = velocity.heading();
         sk.translate(position.x, position.y);
-        sk.scale(sk.map(size, gen.initSize, gen.finalSize, gen.initSize / 50, gen.finalSize / 50), sk.map(size, gen.initSize, gen.finalSize, gen.initSize / 50, gen.finalSize / 50));
+        sk.scale(sk.map(size, gen.initSize, gen.finalSize, gen.initSize  / 50, gen.finalSize / 50), sk.map(size, gen.initSize, gen.finalSize, gen.initSize / 50, gen.finalSize / 50));
         sk.translate(-position.x, -position.y);
         if (theta < PApplet.PI / 2 && theta > -PApplet.PI / 2) {
             sk.scale(-1.0f, 1.0f);
@@ -66,12 +66,12 @@ public class Prey {
         } else {
             sk.translate(position.x, position.y);
         }
-        
+
         sk.imageMode(PApplet.CENTER);
         sk.fill(0, 0, 255);
         sk.image(img, 0, 0);
         sk.popMatrix();
-        
+
         sk.pushMatrix();
         sk.translate(position.x, position.y);
 //        sk.circle(0, 0, size);
@@ -80,7 +80,7 @@ public class Prey {
 //        sk.rectMode(PApplet.CENTER);
 //        sk.rect(0, 0, 10, 10);
         sk.popMatrix();
-        
+
         sk.popStyle();
         info();
         //update();
@@ -122,6 +122,10 @@ public class Prey {
         return energyPlus;
     }
 
+    public void reproduction() {
+        energy = energy - gen.eRepro;
+    }
+
     public void info() {
         if (Sketch.showEnergy) {
             energyBar();
@@ -134,9 +138,9 @@ public class Prey {
     public void energyBar() {
         sk.pushStyle();
         sk.fill(255, 0, 0);
-        sk.rect(position.x - size / 2, position.y - size / 2 - 10, size, 8);
+        sk.rect(position.x - size / 2, position.y - size / 2 - 10, size, 5);
         sk.fill(0, 255, 0);
-        sk.rect(position.x - size / 2, position.y - size / 2 - 10, PApplet.map(energy, 0, gen.eMax, 0, size), 8);
+        sk.rect(position.x - size / 2, position.y - size / 2 - 10, PApplet.map(energy, 0, gen.eMax, 0, size), 5);
         sk.popStyle();
     }
 

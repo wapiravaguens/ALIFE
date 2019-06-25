@@ -3,6 +3,7 @@ package aquarium;
 import food.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 import quadTree.*;
 import prey.*;
 import predator.*;
@@ -23,14 +24,14 @@ public class Aquarium {
 
     public FoodGenerator foodGenerator;
     public QuadTree qFoodL;
-    
+
     public static TuringMorph turingMorph;
 
     public Aquarium(PApplet sk) {
         this.sk = sk;
         this.turingMorph = new TuringMorph(sk, 100, 100, 2000);
         limit = new Rectangle(sk.width / 2, sk.height / 2, sk.width, sk.height);
-        
+
         this.foodGenerator = new FoodGenerator(sk);
         this.preys = new ArrayList<>();
         this.predators = new ArrayList<>();
@@ -55,24 +56,23 @@ public class Aquarium {
         for (Prey prey : preys) {
             prey.update(qPreys, qPredators, qFoodL);
         }
-//        for (int i = 0; i < 2; i++) {
-//            preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
-//        }
         for (Predator predator : predators) {
-            predator.update();
+            predator.update(qPreys, qPredators, qFoodL);
         }
         preysEatFood();
+        preyReproduction();
+        predatorReproduction();
         predatorsEatPreys();
         preysPredatorsDeath();
         updateQTrees();
     }
 
     public void make() {
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 300; i++) {
             preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
         }
-        for (int i = 0; i < 5; i++) {
-            predators.add(new Predator(sk, sk.random(0, sk.width), sk.random(0, sk.height), PredatorGenotype.random()));
+        for (int i = 0; i < 30; i++) {
+            predators.add(new BoidPredator(sk, sk.random(0, sk.width), sk.random(0, sk.height), PredatorGenotype.random()));
         }
     }
 
@@ -112,7 +112,7 @@ public class Aquarium {
 
     public void preysEatFood() {
         for (Prey prey : preys) {
-            Circle range = new Circle(prey.position.x, prey.position.y, 65);
+            Circle range = new Circle(prey.position.x, prey.position.y, prey.gen.vision);
             ArrayList<Point> foodL = new ArrayList();
             qFoodL.query(range, foodL);
             for (Point p : foodL) {
@@ -140,4 +140,57 @@ public class Aquarium {
             }
         }
     }
+
+    public void preyReproduction() {
+        ListIterator<Prey> iter = preys.listIterator();
+        while (iter.hasNext()) {
+            Prey prey1 = iter.next();
+            Circle range = new Circle(prey1.position.x, prey1.position.y, prey1.gen.vision);
+            ArrayList<Point> preys_ = new ArrayList();
+            qPreys.query(range, preys_);
+            for (Point p : preys_) {
+                Prey prey2 = (Prey) p.obj;
+                if (prey1.sex != prey2.sex) {
+                    if (prey1.age >= prey1.gen.adultAge && prey2.age >= prey2.gen.adultAge) {
+                        if (prey1.energy >= prey1.gen.eRepro && prey2.energy >= prey2.gen.eRepro) {
+                            float dist = PVector.dist(prey1.position, prey2.position);
+                            if (dist > 0 && dist < (prey1.size / 2 + prey2.size / 2)) {
+                                prey1.reproduction();
+                                prey2.reproduction();
+                                iter.add(new BoidPrey(sk, prey1.position.x, prey1.position.y, prey1.gen));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void predatorReproduction() {
+        ListIterator<Predator> iter = predators.listIterator();
+        while (iter.hasNext()) {
+            Predator predator1 = iter.next();
+            Circle range = new Circle(predator1.position.x, predator1.position.y, predator1.gen.vision);
+            ArrayList<Point> predators_ = new ArrayList();
+            qPredators.query(range, predators_);
+            for (Point p : predators_) {
+                Predator predator2 = (Predator) p.obj;
+                if (predator1.sex != predator2.sex) {
+                    if (predator1.age >= predator1.gen.adultAge && predator2.age >= predator2.gen.adultAge) {
+                        if (predator1.energy >= predator1.gen.eRepro && predator2.energy >= predator2.gen.eRepro) {
+                            float dist = PVector.dist(predator1.position, predator2.position);
+                            if (dist > 0 && dist < (predator1.size / 2 + predator2.size / 2)) {
+                                predator1.reproduction();
+                                predator2.reproduction();
+                                iter.add(new BoidPredator(sk, predator1.position.x, predator1.position.y, predator1.gen));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

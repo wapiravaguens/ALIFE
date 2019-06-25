@@ -30,14 +30,16 @@ public class TuringMorph {
     }
 
     public void paint(PImage img, int[] color1, int[] color2, int k) {
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 68; j++) {
-                if ((int) (sk.brightness(img.pixels[i * 68 + j])) > 127) {
+        for (int i = 0; i < img.height; i++) {
+            for (int j = 0; j < img.width ; j++) {
+                if ((int) (sk.brightness(img.pixels[i * img.width + j])) > 127) {
                     float c = (1 - A[k][i][j]);
                     if (c < 0.5) {
-                        img.pixels[i * 68 + j] = sk.color(color1[0], color1[1], color1[2]);
+                        img.set(j, i, sk.color(color1[0], color1[1], color1[2]));
+                        //img.pixels[i * img.width + j] = sk.color(color1[0], color1[1], color1[2]);
                     } else {
-                        img.pixels[i * 68 + j] = sk.color(color2[0], color2[1], color2[2]);
+                        img.set(j, i, sk.color(color2[0], color2[1], color2[2]));
+                        //img.pixels[i * img.width + j] = sk.color(color2[0], color2[1], color2[2]);
                     }
                 }
             }
