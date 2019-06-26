@@ -28,27 +28,38 @@ public class PreyGenotype {
         this.shearX = shearX;
     }
 
-    public static PreyGenotype[] crossover(PreyGenotype gen1, PreyGenotype gen2) {
+    public static PreyGenotype[] offsprings(PreyGenotype gen1, PreyGenotype gen2) {
         Object[] geneticCode1 = createRawGeneticCode(gen1);
         Object[] geneticCode2 = createRawGeneticCode(gen2);
 
-        int pivot = new Random().nextInt(geneticCode1.length) + 1;
-
+        // CrossOver
+        int index = new Random().nextInt(geneticCode1.length - 1) + 1;
         Object[] offspring1 = new Object[geneticCode1.length];
         Object[] offspring2 = new Object[geneticCode1.length];
-
-        for (int i = 0; i < pivot; i++) {
+        for (int i = 0; i < index; i++) {
             offspring1[i] = geneticCode1[i];
             offspring2[i] = geneticCode2[i];
         }
-
-        for (int i = pivot; i < geneticCode1.length; i++) {
+        for (int i = index; i < geneticCode1.length; i++) {
             offspring1[i] = geneticCode2[i];
             offspring2[i] = geneticCode1[i];
         }
 
-        return new PreyGenotype[]{decodeGeneticCode(offspring1),
-            decodeGeneticCode(offspring2)};
+        // Mutation
+        Random rand = new Random();
+        Object[] randValues1 = randomValues();
+        Object[] randValues2 = randomValues();
+        for (int i = 0; i < offspring1.length; i++) {
+            float p = rand.nextFloat();
+            if (p < (1.0 / offspring1.length)) {
+                offspring1[i] = randValues1[i];
+            }
+            if (p < (1.0 / offspring2.length)) {
+                offspring2[i] = randValues2[i];
+            }
+        }
+
+        return new PreyGenotype[]{decodeGeneticCode(offspring1), decodeGeneticCode(offspring2)};
     }
 
     public static Object[] createRawGeneticCode(PreyGenotype gen) {
@@ -79,66 +90,30 @@ public class PreyGenotype {
                 (float) code[7], //vision,
                 (int[]) code[8], //color1,
                 (int[]) code[9], //color2,
-                (int) code[10], //shearX
-                (float) code[11]); //param;
+                (int) code[10], //Param
+                (float) code[11]); //shearX
     }
 
-    public void mutate() {
+    public static Object[] randomValues() {
         Random rand = new Random();
-        float p = rand.nextFloat();
-        if (p < (1 / 6)) {
-            this.initSize = 15.0f + (rand.nextFloat() * 5.0f);
-        }
-        if (p < (1 / 6)) {
-            this.finalSize = 50.0f - (rand.nextFloat() * 30.0f);
-        }
-        if (p < (1 / 6)) {
-            this.eLife = (rand.nextFloat() * 1.0f);
-        }
-        if (p < (1 / 6)) {
-            this.eRepro = (rand.nextFloat() * 100.0f) + 350.0f;//
-        }
-        if (p < (1 / 6)) {
-            this.eMax = (rand.nextFloat() * 200.0f) + 1800.0f;//
-        }
-        if (p < (1 / 6)) {
-            this.expectedAge = 3800;
-        }
-        if (p < (1 / 6)) {
-            this.adultAge = rand.nextInt(51) + 800;//
-        }
-        if (p < (1 / 6)) {
-            this.vision = 45.0f + (rand.nextFloat() * 40.0f);
-        }
-        if (p < (1 / 6)) {
-            this.color1 = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
-        }
-        if (p < (1 / 6)) {
-            this.color2 = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
-        }
-        if (p < (1 / 6)) {
-            this.param = rand.nextInt(5);
-        }
-        if (p < (1 / 6)) {
-            this.shearX = rand.nextFloat() * 45.0f;
-        }
+        Object[] code = new Object[12];
+        code[0] = 15.0f + (rand.nextFloat() * 5.0f);
+        code[1] = 50.0f - (rand.nextFloat() * 30.0f);
+        code[2] = (rand.nextFloat() * 1.0f);
+        code[3] = (rand.nextFloat() * 100.0f) + 350.0f;
+        code[4] = (rand.nextFloat() * 200.0f) + 1800.0f;
+        code[5] = 3800;
+        code[6] = rand.nextInt(51) + 800;
+        code[7] = 45.0f + (rand.nextFloat() * 40.0f);
+        code[8] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
+        code[9] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
+        code[10] = rand.nextInt(5);
+        code[11] = rand.nextFloat() * 45.0f;
+        return code;
     }
 
     public static PreyGenotype random() {
-        Random rand = new Random();
-        float initSize = 15.0f + (rand.nextFloat() * 5.0f);
-        float finalSize = 50.0f - (rand.nextFloat() * 30.0f);
-        float eLife = (rand.nextFloat() * 1.0f);
-        float eRepro = (rand.nextFloat() * 100.0f) + 350.0f;//
-        float eMax = (rand.nextFloat() * 200.0f) + 1800.0f;//
-        int expectedAge = 3800;
-        int adultAge = rand.nextInt(51) + 800;//
-        float vision = 45.0f + (rand.nextFloat() * 40.0f);
-        int[] rColor1 = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
-        int[] rColor2 = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
-        int param = rand.nextInt(5);
-        float shearX = rand.nextFloat() * 45.0f;
-        PreyGenotype preyGenotype = new PreyGenotype(initSize, finalSize, eLife, eRepro, eMax, expectedAge, adultAge, vision, rColor1, rColor2, param, shearX);
+        PreyGenotype preyGenotype = decodeGeneticCode(randomValues());
         return preyGenotype;
     }
 }

@@ -6,6 +6,7 @@ import predator.Predator;
 import java.util.ArrayList;
 import processing.core.*;
 import quadTree.*;
+import sketch.Sketch;
 
 public class BoidPrey extends Prey {
 
@@ -75,8 +76,8 @@ public class BoidPrey extends Prey {
     public PVector avoidWalls() {
         PVector[] targets = {new PVector(position.x, 0),
             new PVector(0, position.y),
-            new PVector(position.x, sk.height),
-            new PVector(sk.width, position.y)
+            new PVector(position.x, Sketch.height_),
+            new PVector(Sketch.width_, position.y)
         };
         PVector steerTotal = new PVector(0, 0);
         for (PVector target : targets) {
@@ -233,11 +234,11 @@ public class BoidPrey extends Prey {
         if (position.y < size / 2) {
             position.y = size / 2;
         }
-        if (position.x > sk.width - size / 2) {
-            position.x = sk.width - size / 2;
+        if (position.x > Sketch.width_ - size / 2) {
+            position.x = Sketch.width_ - size / 2;
         }
-        if (position.y > sk.height - size / 2) {
-            position.y = sk.height - size / 2;
+        if (position.y > Sketch.height_ - size / 2) {
+            position.y = Sketch.height_ - size / 2;
         }
     }
 

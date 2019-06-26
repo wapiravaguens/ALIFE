@@ -28,7 +28,7 @@ public class Aquarium {
     public Aquarium(PApplet sk) {
         this.sk = sk;
         this.turingMorph = new TuringMorph(sk, 100, 100, 2000);
-        limit = new Rectangle(sk.width / 2, sk.height / 2, sk.width, sk.height);
+        limit = new Rectangle(Sketch.width_ / 2, Sketch.height_ / 2, Sketch.width_, Sketch.height_);
 
         this.foodGenerator = new FoodGenerator(sk);
         this.preys = new ArrayList<>();
@@ -40,10 +40,10 @@ public class Aquarium {
 
     public void make() {
         for (int i = 0; i < 200; i++) {
-            preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
+            preys.add(new BoidPrey(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PreyGenotype.random()));
         }
-        for (int i = 0; i < 20; i++) {
-            predators.add(new BoidPredator(sk, sk.random(0, sk.width), sk.random(0, sk.height), PredatorGenotype.random()));
+        for (int i = 0; i < 10; i++) {
+            predators.add(new BoidPredator(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PredatorGenotype.random()));
         }
     }
 
@@ -174,11 +174,9 @@ public class Aquarium {
                             if (dist > 0 && dist < (prey1.size / 2 + prey2.size / 2)) {
                                 prey1.reproduction();
                                 prey2.reproduction();
-                                PreyGenotype[] childs = PreyGenotype.crossover(prey1.gen, prey2.gen);
-                                childs[0].mutate();
-                                childs[1].mutate();
-                                iter.add(new BoidPrey(sk, prey1.position.x, prey1.position.y, childs[0]));
-                                iter.add(new BoidPrey(sk, prey1.position.x, prey1.position.y, childs[1]));
+                                PreyGenotype[] offsprings = PreyGenotype.offsprings(prey1.gen, prey1.gen);
+                                iter.add(new BoidPrey(sk, prey1.position.x, prey1.position.y, offsprings[0]));
+                                //iter.add(new BoidPrey(sk, prey1.position.x, prey1.position.y, offsprings[1]));
                                 break;
                             }
                         }
@@ -204,11 +202,9 @@ public class Aquarium {
                             if (dist > 0 && dist < (predator1.size / 2 + predator2.size / 2)) {
                                 predator1.reproduction();
                                 predator2.reproduction();
-                                PredatorGenotype[] childs = PredatorGenotype.crossover(predator1.gen, predator2.gen);
-                                childs[0].mutate();
-                                childs[1].mutate();
-                                iter.add(new BoidPredator(sk, predator1.position.x, predator1.position.y, childs[0]));
-                                iter.add(new BoidPredator(sk, predator1.position.x, predator1.position.y, childs[1]));
+                                PredatorGenotype[] offsprings = PredatorGenotype.offsprings(predator1.gen, predator2.gen);
+                                iter.add(new BoidPredator(sk, predator1.position.x, predator1.position.y, offsprings[0]));
+                                //iter.add(new BoidPredator(sk, predator1.position.x, predator1.position.y, offsprings[1]));
                                 break;
                             }
                         }

@@ -11,8 +11,11 @@ public class Sketch extends PApplet {
     public static boolean showPreyPredator;
     public static boolean showEnergy;
     public static boolean showVision;
+    public static boolean complete;
     public static int speed;
     public static long time;
+    public static int width_;
+    public static int height_;
 
     public PImage background;
     public Aquarium aquarium;
@@ -26,16 +29,20 @@ public class Sketch extends PApplet {
     @Override
     public void setup() {
         frameRate(60);
-        background = loadImage("background.jpg");
-        background.resize(width, height);
-
+        
         //Globals
         showFrameRate = true;
         showPreyPredator = true;
         showEnergy = false;
         showVision = false;
         speed = 1;
-
+        time = 0;
+        width_ = width;
+        height_ = height;
+        
+        
+        background = loadImage("background.jpg");
+        background.resize(width_, height_);
         aquarium = new Aquarium(this);
     }
 
@@ -47,7 +54,7 @@ public class Sketch extends PApplet {
             time++;
             aquarium.update();
         }
-        
+
         aquarium.render();
 
         info();
@@ -73,9 +80,10 @@ public class Sketch extends PApplet {
         if (key == '-') {
             speed = max(1, speed / 2);
         }
+        if (key == ' ') {
+            complete = !complete;
+        }
     }
-    
-    
 
     public static void main(String[] args) {
         String[] processingArgs = {"ALIFE"};
@@ -93,11 +101,11 @@ public class Sketch extends PApplet {
             text(frameRate, 10, 40);
         }
         if (showPreyPredator) {
-            text("Predators: " + aquarium.predators.size(), width - 260, 40);
-            text("Preys: " + aquarium.preys.size(), width - 260, 80);
+            text("Predators: " + aquarium.predators.size(), width_ - 260, 40);
+            text("Preys: " + aquarium.preys.size(), width_ - 260, 80);
         }
         if (speed > 1) {
-            text(speed + "X", width - 90, height - 15);
+            text(speed + "X", width_ - 90, height_ - 15);
         }
         popStyle();
     }
