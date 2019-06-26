@@ -1,14 +1,11 @@
 package prey;
 
 import food.Food;
-import java.util.ArrayList;
 import java.util.Collections;
 import predator.Predator;
-import processing.core.PApplet;
-import processing.core.PVector;
-import quadTree.Circle;
-import quadTree.Point;
-import quadTree.QuadTree;
+import java.util.ArrayList;
+import processing.core.*;
+import quadTree.*;
 
 public class BoidPrey extends Prey {
 
@@ -17,17 +14,17 @@ public class BoidPrey extends Prey {
     }
 
     @Override
-    public void move(QuadTree preys, QuadTree predators, QuadTree foodL) {
+    public void move(QuadTree qPreys, QuadTree qPredators, QuadTree qFoodL) {
         float foodWeight = 1.0f;
         if (energy <= gen.eMax * 0.50) {
             foodWeight = 10;
         }
-        PVector food = seekFood(foodL);
-        PVector avop = avoidPredators(predators);
+        PVector food = seekFood(qFoodL);
+        PVector avop = avoidPredators(qPredators);
         PVector avow = avoidWalls();
-        PVector sep = separate(preys);   // Separation
-        PVector ali = align(preys);      // Alignment
-        PVector coh = cohesion(preys);   // Cohesion
+        PVector sep = separate(qPreys);   // Separation
+        PVector ali = align(qPreys);      // Alignment
+        PVector coh = cohesion(qPreys);   // Cohesion
         // Arbitrarily weight these forces
         food.mult(foodWeight);
         avop.mult(100.0f);

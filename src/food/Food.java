@@ -30,7 +30,6 @@ public class Food {
         sk.circle(position.x, position.y, size);
         sk.popMatrix();
         sk.popStyle();
-        //update();
     }
 
     public void update() {

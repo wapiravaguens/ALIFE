@@ -2,11 +2,8 @@ package predator;
 
 import java.util.ArrayList;
 import prey.Prey;
-import processing.core.PApplet;
-import processing.core.PVector;
-import quadTree.Circle;
-import quadTree.Point;
-import quadTree.QuadTree;
+import processing.core.*;
+import quadTree.*;
 
 public class BoidPredator extends Predator {
 
@@ -15,12 +12,12 @@ public class BoidPredator extends Predator {
     }
 
     @Override
-    public void move(QuadTree preys, QuadTree predators, QuadTree foodL) {
+    public void move(QuadTree qPreys, QuadTree qPredators, QuadTree qFoodL) {
         PVector avow = avoidWalls();
-        PVector hunt = hunt(preys);   // Cohesion
-        PVector sep = separate(predators);   // Separation
-        PVector ali = align(predators);      // Alignment
-        PVector coh = cohesion(predators);   // Cohesion
+        PVector hunt = hunt(qPreys);   // Cohesion
+        PVector sep = separate(qPredators);   // Separation
+        PVector ali = align(qPredators);      // Alignment
+        PVector coh = cohesion(qPredators);   // Cohesion
         // Arbitrarily weight these forces
         avow.mult(3.0f);
         hunt.mult(10.0f);
@@ -34,6 +31,7 @@ public class BoidPredator extends Predator {
         applyForce(ali);
         applyForce(coh);
         // Update velocity
+        acceleration.limit(maxforce);
         velocity.add(acceleration);
         // Limit speed
         velocity.limit(maxspeed);
@@ -148,7 +146,7 @@ public class BoidPredator extends Predator {
             Prey other = (Prey) p.obj;
             sum.add(other.position); // Add position
             count++;
-
+            break;
         }
         if (count > 0) {
             sum.div(count);

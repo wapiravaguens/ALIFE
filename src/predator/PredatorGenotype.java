@@ -11,8 +11,9 @@ public class PredatorGenotype {
     public int[] color1;
     public int[] color2;
     public int param;
+    public float shearX;
 
-    public PredatorGenotype(float initSize, float finalSize, float eLife, float eRepro, float eMax, int expectedAge, int adultAge, float vision, int[] color1, int[] color2, int param) {
+    public PredatorGenotype(float initSize, float finalSize, float eLife, float eRepro, float eMax, int expectedAge, int adultAge, float vision, int[] color1, int[] color2, int param, float shearX) {
         this.initSize = initSize;
         this.finalSize = finalSize;
         this.eLife = eLife;
@@ -24,6 +25,7 @@ public class PredatorGenotype {
         this.color1 = color1;
         this.color2 = color2;
         this.param = param;
+        this.shearX = shearX;
     }
 
     public static PredatorGenotype[] crossover(PredatorGenotype gen1, PredatorGenotype gen2) {
@@ -50,7 +52,7 @@ public class PredatorGenotype {
     }
 
     public static Object[] createRawGeneticCode(PredatorGenotype gen) {
-        Object[] code = new Object[11];
+        Object[] code = new Object[12];
         code[0] = gen.initSize;
         code[1] = gen.finalSize;
         code[2] = gen.eLife;
@@ -62,6 +64,7 @@ public class PredatorGenotype {
         code[8] = gen.color1;
         code[9] = gen.color2;
         code[10] = gen.param;
+        code[11] = gen.shearX;
         return code;
     }
 
@@ -76,61 +79,66 @@ public class PredatorGenotype {
                 (float) code[7], //vision,
                 (int[]) code[8], //color1,
                 (int[]) code[9], //color2,
-                (int) code[10]); //param;
+                (int) code[10], //shearX
+                (float) code[11]); //param;
     }
 
     public void mutate() {
         Random rand = new Random();
         float p = rand.nextFloat();
-        if (p < (1 / 11)) {
-            this.initSize = 30.0f + (rand.nextFloat() * 10.0f);
+        if (p < (1 / 6)) {
+            this.initSize = 15.0f + (rand.nextFloat() * 5.0f);
         }
-        if (p < (1 / 11)) {
-            this.finalSize = 100.0f - (rand.nextFloat() * 50.0f);
+        if (p < (1 / 6)) {
+            this.finalSize = 50.0f - (rand.nextFloat() * 30.0f);
         }
-        if (p < (1 / 11)) {
-            this.eLife = rand.nextInt(1) + 1;
+        if (p < (1 / 6)) {
+            this.eLife = (rand.nextFloat() * 1.0f);
         }
-        if (p < (1 / 11)) {
-            this.eRepro = rand.nextInt(101) + 550;//
+        if (p < (1 / 6)) {
+            this.eRepro = (rand.nextFloat() * 100.0f) + 350.0f;//
         }
-        if (p < (1 / 11)) {
-            this.eMax = rand.nextInt(201) + 1800;//
+        if (p < (1 / 6)) {
+            this.eMax = (rand.nextFloat() * 200.0f) + 1800.0f;//
         }
-        if (p < (1 / 11)) {
+        if (p < (1 / 6)) {
             this.expectedAge = 3800;
         }
-        if (p < (1 / 11)) {
-            this.adultAge = rand.nextInt(51) + 1800;//
+        if (p < (1 / 6)) {
+            this.adultAge = rand.nextInt(51) + 800;//
         }
-        if (p < (1 / 11)) {
+        if (p < (1 / 6)) {
             this.vision = 45.0f + (rand.nextFloat() * 40.0f);
         }
-        if (p < (1 / 11)) {
-            this.color1 = new int[]{rand.nextInt(127) + 128,0, 0};
+        if (p < (1 / 6)) {
+            this.color1 = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
         }
-        if (p < (1 / 11)) {
-            this.color2 = new int[]{rand.nextInt(127) + 128,0, 0};
+        if (p < (1 / 6)) {
+            this.color2 = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
         }
-        if (p < (1 / 11)) {
+        if (p < (1 / 6)) {
             this.param = rand.nextInt(5);
+        }
+        if (p < (1 / 6)) {
+            this.shearX = rand.nextFloat() * 45.0f;
         }
     }
 
     public static PredatorGenotype random() {
         Random rand = new Random();
-        float initSize = 30.0f + (rand.nextFloat() * 10.0f);
-        float finalSize = 100.0f - (rand.nextFloat() * 50.0f);
-        float eLife = rand.nextInt(1) + 1;
-        float eRepro = rand.nextInt(101) + 550;//
-        float eMax = rand.nextInt(201) + 1800;//
+        float initSize = 15.0f + (rand.nextFloat() * 5.0f);
+        float finalSize = 50.0f - (rand.nextFloat() * 30.0f);
+        float eLife = (rand.nextFloat() * 1.0f);
+        float eRepro = (rand.nextFloat() * 100.0f) + 350.0f;//
+        float eMax = (rand.nextFloat() * 200.0f) + 1800.0f;//
         int expectedAge = 3800;
-        int adultAge = rand.nextInt(51) + 1800;//
+        int adultAge = rand.nextInt(51) + 800;//
         float vision = 45.0f + (rand.nextFloat() * 40.0f);
-        int[] rColor1 = new int[]{rand.nextInt(127) + 128,0, 0};
-        int[] rColor2 = new int[]{rand.nextInt(127) + 128,0, 0};
+        int[] rColor1 = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
+        int[] rColor2 = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)};
         int param = rand.nextInt(5);
-        PredatorGenotype predatorGenotype = new PredatorGenotype(initSize, finalSize, eLife, eRepro, eMax, expectedAge, adultAge, vision, rColor1, rColor2, param);
+        float shearX = rand.nextFloat() * 45.0f;
+        PredatorGenotype predatorGenotype = new PredatorGenotype(initSize, finalSize, eLife, eRepro, eMax, expectedAge, adultAge, vision, rColor1, rColor2, param, shearX);
         return predatorGenotype;
     }
 }

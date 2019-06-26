@@ -1,5 +1,6 @@
 package sketch;
 
+import charts.Line;
 import aquarium.Aquarium;
 import processing.core.*;
 
@@ -11,7 +12,6 @@ public class Sketch extends PApplet {
     public static boolean showEnergy;
     public static boolean showVision;
     public static int speed;
-
     public static long time;
 
     public PImage background;
@@ -47,7 +47,7 @@ public class Sketch extends PApplet {
             time++;
             aquarium.update();
         }
-
+        
         aquarium.render();
 
         info();
@@ -74,11 +74,16 @@ public class Sketch extends PApplet {
             speed = max(1, speed / 2);
         }
     }
+    
+    
 
     public static void main(String[] args) {
-        String[] processingArgs = {"Sketch"};
+        String[] processingArgs = {"ALIFE"};
         Sketch sk = new Sketch();
         PApplet.runSketch(processingArgs, sk);
+//        String[] processingArgs2 = {"Chart"};
+//        Line sk2 = new Line();
+//        PApplet.runSketch(processingArgs2, sk2);
     }
 
     public void info() {
@@ -88,9 +93,8 @@ public class Sketch extends PApplet {
             text(frameRate, 10, 40);
         }
         if (showPreyPredator) {
-            text(frameRate, 10, 40);
-            text("Predators: " + aquarium.predators.size(), width - 250, 40);
-            text("Preys: " + aquarium.preys.size(), width - 250, 80);
+            text("Predators: " + aquarium.predators.size(), width - 260, 40);
+            text("Preys: " + aquarium.preys.size(), width - 260, 80);
         }
         if (speed > 1) {
             text(speed + "X", width - 90, height - 15);

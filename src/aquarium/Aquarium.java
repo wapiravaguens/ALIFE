@@ -1,14 +1,12 @@
 package aquarium;
 
 import food.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.*;
 import quadTree.*;
 import prey.*;
 import predator.*;
-import processing.core.PApplet;
-import processing.core.PVector;
+import processing.core.*;
+import sketch.Sketch;
 import turingMorph.TuringMorph;
 
 public class Aquarium {
@@ -40,6 +38,15 @@ public class Aquarium {
         updateQTrees();
     }
 
+    public void make() {
+        for (int i = 0; i < 200; i++) {
+            preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
+        }
+        for (int i = 0; i < 20; i++) {
+            predators.add(new BoidPredator(sk, sk.random(0, sk.width), sk.random(0, sk.height), PredatorGenotype.random()));
+        }
+    }
+
     public void render() {
         foodGenerator.render();
         for (Prey fish : preys) {
@@ -48,50 +55,42 @@ public class Aquarium {
         for (Predator predator : predators) {
             predator.render();
         }
-        //update();
     }
 
     public void update() {
-        foodGenerator.update();
         for (Prey prey : preys) {
             prey.update(qPreys, qPredators, qFoodL);
         }
         for (Predator predator : predators) {
             predator.update(qPreys, qPredators, qFoodL);
         }
+        predatorsEatPreys();
+        predatorReproduction();
         preysEatFood();
         preyReproduction();
-        predatorReproduction();
-        predatorsEatPreys();
         preysPredatorsDeath();
+        foodGenerator.update();
         updateQTrees();
 
-        double sum = 0;
-        double sum2 = 0;
-        double sum3 = 0;
-        if (sketch.Sketch.time % 60 == 0) {
-            for (Prey prey : preys) {
-                sum += prey.gen.vision;
-                sum2 += prey.gen.eLife;
-                sum3 += prey.gen.finalSize;
-            }
-            sum = sum / preys.size();
-            sum2 = sum2 / preys.size();
-            sum3 = sum3 / preys.size();
-            System.out.println("Mean Vision: " +  sum);
-            System.out.println("Mean E: " +  sum2);
-            System.out.println("Size: " + sum3);
-            System.out.println("");
-        }
-    }
-
-    public void make() {
-        for (int i = 0; i < 200; i++) {
-            preys.add(new BoidPrey(sk, sk.random(0, sk.width), sk.random(0, sk.height), PreyGenotype.random()));
-        }
-        for (int i = 0; i < 20; i++) {
-            predators.add(new BoidPredator(sk, sk.random(0, sk.width), sk.random(0, sk.height), PredatorGenotype.random()));
-        }
+//        float sum = 0;
+//        float sum2 = 0;
+//        double sum3 = 0;
+//        if (Sketch.time % 60 == 0) {
+//            for (Prey prey : preys) {
+//                sum += prey.gen.vision;
+//                sum2 += prey.gen.eLife;
+//                sum3 += prey.gen.finalSize;
+//            }
+//            sum = sum / preys.size();
+//            sum2 = sum2 / preys.size();
+//            sum3 = sum3 / preys.size();
+//            System.out.println("Mean Vision: " +  sum);
+//            System.out.println("Mean E: " +  sum2);
+//            System.out.println("Size: " + sum3);
+//            System.out.println("");
+//            PVector dataVision = new PVector(Sketch.time / 60, sum2);
+//            data.add(dataVision);
+//        }
     }
 
     public void updateQTrees() {
@@ -114,7 +113,7 @@ public class Aquarium {
 
     public void predatorsEatPreys() {
         for (Predator predator : predators) {
-            Circle range = new Circle(predator.position.x, predator.position.y, 65);
+            Circle range = new Circle(predator.position.x, predator.position.y, predator.gen.vision);
             ArrayList<Point> preys_ = new ArrayList();
             qPreys.query(range, preys_);
             for (Point p : preys_) {

@@ -79,7 +79,7 @@ public class PreyGenotype {
                 (float) code[7], //vision,
                 (int[]) code[8], //color1,
                 (int[]) code[9], //color2,
-                (int) code[10],
+                (int) code[10], //shearX
                 (float) code[11]); //param;
     }
 

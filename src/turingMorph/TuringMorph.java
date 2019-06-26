@@ -52,7 +52,6 @@ public class TuringMorph {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 float c = (1 - A[k][i][j]);
-                //System.out.println(c);
                 if (c < 0.5) {
                     img.pixels[i * cols + j] = sk.color(color1[0], color1[1], color1[2]);
                 } else {

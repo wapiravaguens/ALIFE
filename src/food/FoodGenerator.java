@@ -37,7 +37,6 @@ public class FoodGenerator {
         for (LSystem plant : plants) {
             plant.render();
         }
-        //update();
     }
 
     public void update() {
@@ -81,6 +80,7 @@ public class FoodGenerator {
         // South
         plants.add(LSystem.plant3(sk, (sk.width / 4), (3 * sk.height / 4), summer));
         plants.add(LSystem.plant4(sk, (3 * sk.width / 4), (3 * sk.height / 4), summer));
+        
 //        for (LSystem plant : plants) {
 //            System.out.println(plant.sentence.length());
 //        }
@@ -96,7 +96,7 @@ public class FoodGenerator {
                     float x = (plant.x - (n / 2 * offSetX)) + (j * offSetX);
                     float y = (plant.y - (n / 2 * offSetY)) + (i * offSetY);
                     float growth = plant.color == summer ? gSummer : gWinter;
-                    foodL.add(new Food(sk, x, y, 200, growth, 25)); // Set maxCapacity and CurrentLevel
+                    foodL.add(new Food(sk, x, y, 200, growth, 25)); // Set maxCapacity and initial CurrentLevel
                 }
             }
         }

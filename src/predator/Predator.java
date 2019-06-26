@@ -1,10 +1,9 @@
 package predator;
 
+import affineTransformation.AffineTransformation;
 import aquarium.Aquarium;
 import java.util.Random;
-import processing.core.PApplet;
-import processing.core.PImage;
-import processing.core.PVector;
+import processing.core.*;
 import quadTree.QuadTree;
 import sketch.Sketch;
 
@@ -31,9 +30,9 @@ public class Predator {
     public Predator(PApplet sk, float x, float y, PredatorGenotype gen) {
         this.sk = sk;
         this.gen = gen;
-        this.img = sk.loadImage("shark.png");
-        //this.img.resize(72, 50);
-        //Aquarium.turingMorph.paint(img, gen.color1, new int[]{0, 0, 0}, gen.param);
+        this.img = sk.loadImage("predator.png");
+        this.img.resize(72, 50);
+        Aquarium.turingMorph.paint(img, gen.color1, gen.color2, gen.param);
 
         // Life
         this.age = 0;
@@ -43,7 +42,7 @@ public class Predator {
 
         // Boids
         this.position = new PVector(x, y);
-        this.velocity = new PVector(sk.random(-1f, 1f), sk.random(-1f, 1.0f));
+        this.velocity = new PVector(sk.random(-1.0f, 1.0f), sk.random(-1.0f, 1.0f));
         this.acceleration = new PVector(0, 0);
         this.maxspeed = 3.5f;
         this.maxforce = 0.1f;
@@ -51,12 +50,13 @@ public class Predator {
 
     public void render() {
         sk.pushStyle();
-
         sk.pushMatrix();
+        
+        // Scale and ShearX
+        AffineTransformation.transformPredator(sk, this);
+        
+        // Orientation
         float theta = velocity.heading();
-        sk.translate(position.x, position.y);
-        sk.scale(sk.map(size, gen.initSize, gen.finalSize, gen.initSize / 50, gen.finalSize / 50), sk.map(size, gen.initSize, gen.finalSize, gen.initSize / 50, gen.finalSize / 50));
-        sk.translate(-position.x, -position.y);
         if (theta < PApplet.PI / 2 && theta > -PApplet.PI / 2) {
             sk.scale(-1.0f, 1.0f);
             sk.translate(-position.x, position.y);
@@ -64,36 +64,17 @@ public class Predator {
             sk.translate(position.x, position.y);
         }
 
+        // Draw image
         sk.imageMode(PApplet.CENTER);
-        sk.fill(255, 0, 0);
         sk.image(img, 0, 0);
         sk.popMatrix();
-
-        sk.pushMatrix();
-        sk.translate(position.x, position.y);
-//        sk.circle(0, 0, size);
-//        sk.rotate(velocity.heading() + sk.PI/2);
-//        sk.triangle(0, -15, -5, 0, 5, 0);
-//        sk.rectMode(PApplet.CENTER);
-//        sk.rect(0, 0, 10, 10);
-        sk.popMatrix();
-
         sk.popStyle();
+        
         info();
-        //update();
     }
 
-    public void update(QuadTree preys, QuadTree predators, QuadTree foodL) {
-//        Circle range = new Circle(position.x, position.y, gen.vision);
-//        ArrayList<Point> predators_ = new ArrayList();
-//        predators.query(range, predators_);
-//        for (Point p : predators_) {
-//            sk.pushStyle();
-//            sk.fill(0, 255, 0);
-//            sk.circle(p.x, p.y, p.size * 2);
-//            sk.popStyle();
-//        }
-        move(preys, predators, foodL);
+    public void update(QuadTree qPreys, QuadTree qPredators, QuadTree qFoodL) {
+        move(qPreys, qPredators, qFoodL);
         metabolism();
     }
 
@@ -114,7 +95,7 @@ public class Predator {
     }
 
     public float eat(float ePrey) {
-        float energyPlus = PApplet.min(ePrey, gen.eMax - energy);
+        float energyPlus = sk.min(ePrey, gen.eMax - energy);
         energy = energy + energyPlus;
         return energyPlus;
     }
@@ -135,9 +116,9 @@ public class Predator {
     public void energyBar() {
         sk.pushStyle();
         sk.fill(255, 0, 0);
-        sk.rect(position.x - size / 2, position.y - size / 2 - 10, size, 8);
+        sk.rect(position.x - size / 2, position.y - size / 2 - 10, size, 5);
         sk.fill(0, 255, 0);
-        sk.rect(position.x - size / 2, position.y - size / 2 - 10, PApplet.map(energy, 0, gen.eMax, 0, size), 8);
+        sk.rect(position.x - size / 2, position.y - size / 2 - 10, sk.map(energy, 0, gen.eMax, 0, size), 5);
         sk.popStyle();
     }
 
