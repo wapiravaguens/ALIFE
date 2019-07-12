@@ -97,18 +97,18 @@ public class PredatorGenotype {
     public static Object[] randomValues() {
         Random rand = new Random();
         Object[] code = new Object[12];
-        code[0] = 15.0f + (rand.nextFloat() * 5.0f);
-        code[1] = 50.0f - (rand.nextFloat() * 30.0f);
-        code[2] = (rand.nextFloat() * 1.0f);
-        code[3] = (rand.nextFloat() * 100.0f) + 350.0f;
-        code[4] = (rand.nextFloat() * 200.0f) + 1800.0f;
-        code[5] = 3800;
-        code[6] = rand.nextInt(51) + 800;
-        code[7] = 45.0f + (rand.nextFloat() * 40.0f);
-        code[8] = new int[]{rand.nextInt(192) + 64, 0, 0};
-        code[9] = new int[]{0, 0, 0};
-        code[10] = rand.nextInt(5);
-        code[11] = rand.nextFloat() * 45.0f;
+        code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize,
+        code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize,
+        code[2] = (rand.nextFloat() * 1.0f); //eLife,
+        code[3] = (rand.nextFloat() * 100.0f) + 350.0f; //eRepro,
+        code[4] = (rand.nextFloat() * 200.0f) + 1800.0f; //eMax,
+        code[5] = 3800; //expectedAge,
+        code[6] = rand.nextInt(51) + 800; //adultAge,
+        code[7] = 45.0f + (rand.nextFloat() * 40.0f); //vision,
+        code[8] = new int[]{rand.nextInt(192) + 64, 0, 0}; //color1,
+        code[9] = new int[]{0, 0, 0}; //color2,
+        code[10] = rand.nextInt(5); //Param
+        code[11] = rand.nextFloat() * 30.0f; //shearX
         return code;
     }
 
