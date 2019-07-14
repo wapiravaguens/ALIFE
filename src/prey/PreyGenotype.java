@@ -99,12 +99,16 @@ public class PreyGenotype {
         Object[] code = new Object[12];
         code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize,
         code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize,
-        code[2] = (rand.nextFloat() * 1.0f); //eLife,
-        code[3] = (rand.nextFloat() * 100.0f) + 350.0f; //eRepro,
-        code[4] = (rand.nextFloat() * 200.0f) + 1800.0f; //eMax,
-        code[5] = 3800; //expectedAge,
-        code[6] = rand.nextInt(51) + 800; //adultAge,
-        code[7] = 45.0f + (rand.nextFloat() * 40.0f); //vision,
+        
+        code[2] = ((rand.nextFloat() * 0.25f) + 0.5f); //eLife,
+        
+        code[3] = ((rand.nextFloat() * 1.25f) + 10.0f) * 60.0f; //eRepro,
+        code[4] = ((rand.nextFloat() * 2.5f) + 20.0f) * 60.0f; //eMax,
+        
+        code[5] = (int) (((rand.nextFloat() * 5.0f) + 60.0f) * 60.0f); //expectedAge,
+        code[6] = (int) (((rand.nextFloat() * 2.0f) + 30.0f) * 60.0f); //adultAge,
+        
+        code[7] = 50.0f + (rand.nextFloat() * 30.0f); //vision,
         code[8] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color1,
         code[9] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color2,
         code[10] = rand.nextInt(5); //Param

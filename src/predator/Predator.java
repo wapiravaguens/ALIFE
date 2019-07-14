@@ -44,8 +44,8 @@ public class Predator {
         this.position = new PVector(x, y);
         this.velocity = new PVector(sk.random(-1.0f, 1.0f), sk.random(-1.0f, 1.0f));
         this.acceleration = new PVector(0, 0);
-        this.maxspeed = 3.5f;
-        this.maxforce = 0.1f;
+        this.maxspeed = 4.0f;
+        this.maxforce = 0.15f;
     }
 
     public void render() {

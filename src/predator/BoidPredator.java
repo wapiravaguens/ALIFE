@@ -8,25 +8,29 @@ import sketch.Sketch;
 
 public class BoidPredator extends Predator {
 
+    public boolean eat = false;
+
     public BoidPredator(PApplet sk, float x, float y, PredatorGenotype gen) {
         super(sk, x, y, gen);
     }
 
     @Override
     public void move(QuadTree qPreys, QuadTree qPredators, QuadTree qFoodL) {
-        PVector avow = avoidWalls();
+        float foodWeight = 0.0f;
+        if (energy <= gen.eMax * 0.50) {
+            foodWeight = 100;
+        }
+
         PVector hunt = hunt(qPreys);   // Cohesion
         PVector sep = separate(qPredators);   // Separation
         PVector ali = align(qPredators);      // Alignment
         PVector coh = cohesion(qPredators);   // Cohesion
         // Arbitrarily weight these forces
-        avow.mult(3.0f);
-        hunt.mult(10.0f);
+        hunt.mult(foodWeight);
         sep.mult(1.5f);
         ali.mult(1.0f);
         coh.mult(1.0f);
         // Add the force vectors to acceleration
-        applyForce(avow);
         applyForce(hunt);
         applyForce(sep);
         applyForce(ali);
@@ -157,27 +161,6 @@ public class BoidPredator extends Predator {
         }
     }
 
-    // AvoidWalls
-    // Method checks for walls
-    public PVector avoidWalls() {
-        PVector[] targets = {new PVector(position.x, 0),
-            new PVector(0, position.y),
-            new PVector(position.x, Sketch.height_),
-            new PVector(Sketch.width_, position.y)
-        };
-        PVector steerTotal = new PVector(0, 0);
-        for (PVector target : targets) {
-            float d = PVector.dist(position, target);
-            if ((d > 0) && (d < gen.vision)) {
-                PVector steer = new PVector(); // creates vector for steering
-                steer.set(PVector.sub(position, target)); // steering vector points away from
-                steer.mult(1 / PApplet.sq(PVector.dist(position, target)));
-                steerTotal.add(steer);
-            }
-        }
-        return steerTotal.limit(maxforce);
-    }
-
     public void applyForce(PVector force) {
         // We could add mass here if we want A = F / M
         acceleration.add(force);
@@ -198,16 +181,16 @@ public class BoidPredator extends Predator {
 
     public void borders() {
         if (position.x < size / 2) {
-            position.x = size / 2;
+            position.x = Sketch.width_;
         }
         if (position.y < size / 2) {
+            position.y = Sketch.height_;
+        }
+        if (position.x > Sketch.width_ + size / 2) {
+            position.x = size / 2;
+        }
+        if (position.y > Sketch.height_ + size / 2) {
             position.y = size / 2;
-        }
-        if (position.x > Sketch.width_ - size / 2) {
-            position.x = Sketch.width_ - size / 2;
-        }
-        if (position.y > Sketch.height_ - size / 2) {
-            position.y = Sketch.height_ - size / 2;
         }
     }
 }

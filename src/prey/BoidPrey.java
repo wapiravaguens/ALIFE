@@ -10,6 +10,8 @@ import sketch.Sketch;
 
 public class BoidPrey extends Prey {
 
+    public boolean eat = false;
+
     public BoidPrey(PApplet sk, float x, float y, PreyGenotype gen) {
         super(sk, x, y, gen);
     }
@@ -17,29 +19,33 @@ public class BoidPrey extends Prey {
     @Override
     public void move(QuadTree qPreys, QuadTree qPredators, QuadTree qFoodL) {
         float foodWeight = 1.0f;
-        if (energy <= gen.eMax * 0.50) {
-            foodWeight = 10;
+        if (energy <= gen.eMax * 0.30 || eat) {
+            foodWeight = 30;
+            eat = true;
+            if (energy > gen.eMax * 0.70) {
+                eat = false;
+            }
         }
-        PVector food = seekFood(qFoodL);
-        PVector avop = avoidPredators(qPredators);
-        PVector avow = avoidWalls();
+        
+        PVector avop = avoidPredators(qPredators); //Run
+        PVector food = seekFood(qFoodL); // SeekFood
         PVector sep = separate(qPreys);   // Separation
         PVector ali = align(qPreys);      // Alignment
-        PVector coh = cohesion(qPreys);   // Cohesion
-        // Arbitrarily weight these forces
-        food.mult(foodWeight);
+        PVector coh = cohesion(qPreys);   // Cohesion  
+        
+        
         avop.mult(100.0f);
-        avow.mult(3.0f);
+        food.mult(foodWeight);
         sep.mult(1.5f);
         ali.mult(1.0f);
         coh.mult(1.0f);
-        // Add the force vectors to acceleration
-        applyForce(food);
+        
         applyForce(avop);
-        applyForce(avow);
+        applyForce(food);
         applyForce(sep);
         applyForce(ali);
         applyForce(coh);
+
         // Update velocity
         velocity.add(acceleration);
         // Limit speed
@@ -51,8 +57,8 @@ public class BoidPrey extends Prey {
         borders();
     }
 
-    // Avoid
-    // Method checks for walls
+    // Run
+    // Method for run
     public PVector avoidPredators(QuadTree qPredators) {
         Circle range = new Circle(position.x, position.y, gen.vision);
         ArrayList<Point> predators = new ArrayList();
@@ -65,27 +71,6 @@ public class BoidPrey extends Prey {
                 PVector steer = new PVector(); // creates vector for steering
                 steer.set(PVector.sub(position, predator.position)); // steering vector points away from
                 steer.mult(1 / PApplet.sq(PVector.dist(position, predator.position)));
-                steerTotal.add(steer);
-            }
-        }
-        return steerTotal.limit(maxforce);
-    }
-
-    // AvoidWalls
-    // Method checks for walls
-    public PVector avoidWalls() {
-        PVector[] targets = {new PVector(position.x, 0),
-            new PVector(0, position.y),
-            new PVector(position.x, Sketch.height_),
-            new PVector(Sketch.width_, position.y)
-        };
-        PVector steerTotal = new PVector(0, 0);
-        for (PVector target : targets) {
-            float d = PVector.dist(position, target);
-            if ((d > 0) && (d < gen.vision)) {
-                PVector steer = new PVector(); // creates vector for steering
-                steer.set(PVector.sub(position, target)); // steering vector points away from
-                steer.mult(1 / PApplet.sq(PVector.dist(position, target)));
                 steerTotal.add(steer);
             }
         }
@@ -229,16 +214,16 @@ public class BoidPrey extends Prey {
 
     public void borders() {
         if (position.x < size / 2) {
-            position.x = size / 2;
+            position.x = Sketch.width_;
         }
         if (position.y < size / 2) {
+            position.y = Sketch.height_;
+        }
+        if (position.x > Sketch.width_ + size / 2) {
+            position.x = size / 2;
+        }
+        if (position.y > Sketch.height_ + size / 2) {
             position.y = size / 2;
-        }
-        if (position.x > Sketch.width_ - size / 2) {
-            position.x = Sketch.width_ - size / 2;
-        }
-        if (position.y > Sketch.height_ - size / 2) {
-            position.y = Sketch.height_ - size / 2;
         }
     }
 

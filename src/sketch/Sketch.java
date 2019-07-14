@@ -3,6 +3,7 @@ package sketch;
 import charts.Line;
 import aquarium.Aquarium;
 import processing.core.*;
+import processing.event.MouseEvent;
 
 public class Sketch extends PApplet {
 
@@ -16,6 +17,7 @@ public class Sketch extends PApplet {
     public static long time;
     public static int width_;
     public static int height_;
+    public static float zoom;
 
     public PImage background;
     public Aquarium aquarium;
@@ -29,7 +31,7 @@ public class Sketch extends PApplet {
     @Override
     public void setup() {
         frameRate(60);
-        
+
         //Globals
         showFrameRate = true;
         showPreyPredator = true;
@@ -37,9 +39,9 @@ public class Sketch extends PApplet {
         showVision = false;
         speed = 1;
         time = 0;
-        width_ = width;
-        height_ = height;
-        
+        zoom = 1.0f;
+        width_ = (int) (width * zoom);
+        height_ = (int) (height * zoom);
         
         background = loadImage("background.jpg");
         background.resize(width_, height_);
@@ -49,14 +51,17 @@ public class Sketch extends PApplet {
     @Override
     public void draw() {
         image(background, 0, 0);
-
+       
         for (int i = 0; i < speed; i++) {
             time++;
             aquarium.update();
         }
-
-        aquarium.render();
-
+        
+        pushMatrix();
+        scale(1.0f/zoom);
+        aquarium.render();  
+        popMatrix();
+        
         info();
     }
 
@@ -85,6 +90,12 @@ public class Sketch extends PApplet {
         }
     }
 
+//    @Override
+//    public void mouseWheel(MouseEvent event) {
+//        float e = event.getCount();
+//        zoom = min(1.5f, zoom + e/50);
+//    }
+
     public static void main(String[] args) {
         String[] processingArgs = {"ALIFE"};
         Sketch sk = new Sketch();
@@ -99,13 +110,14 @@ public class Sketch extends PApplet {
         textSize(32);
         if (showFrameRate) {
             text(frameRate, 10, 40);
+            text(time/60, 10, 80);
         }
         if (showPreyPredator) {
-            text("Predators: " + aquarium.predators.size(), width_ - 260, 40);
-            text("Preys: " + aquarium.preys.size(), width_ - 260, 80);
+            text("Predators: " + aquarium.predators.size(), width - 260, 40);
+            text("Preys: " + aquarium.preys.size(), width - 260, 80);
         }
         if (speed > 1) {
-            text(speed + "X", width_ - 90, height_ - 15);
+            text(speed + "X", width - 90, height - 15);
         }
         popStyle();
     }

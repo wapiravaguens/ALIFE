@@ -105,7 +105,7 @@ public class Prey {
 
     public void info() {
         if (Sketch.showEnergy) {
-            energyBar();
+            //energyBar();
         }
         if (Sketch.showVision) {
             visionCircle();

@@ -21,7 +21,7 @@ public class AffineTransformation {
 
         float sizeScale = sk.map(predator.size, predator.gen.initSize, predator.gen.finalSize, predator.gen.initSize / 50, predator.gen.finalSize / 50);
         sk.scale(sizeScale);
-        //sk.shearX(PApplet.radians(predator.gen.shearX));
+        sk.shearX(PApplet.radians(predator.gen.shearX));
 
         sk.translate(-predator.position.x, -predator.position.y);
     }

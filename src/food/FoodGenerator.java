@@ -24,9 +24,9 @@ public class FoodGenerator {
         this.currentStation = true;
 
         // Initialization
-        this.gSummer = 5.0f;
+        this.gSummer = 2.5f;
         this.gWinter = 1.0f;
-        this.timeStation = 5;
+        this.timeStation = 20;
         make();
     }
 
