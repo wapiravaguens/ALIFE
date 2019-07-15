@@ -222,10 +222,14 @@ public class Aquarium {
                 data_[11] += predator.gen.maxforce;
             }
             for (int i = 0; i < 6; i++) {
-                data_[i] /= preys.size();
-                data.get(i).add(new PVector(Sketch.time / 60, data_[i]));
-                data_[i+6] /= predators.size();
-                data.get(i+6).add(new PVector(Sketch.time / 60, data_[i+6]));
+                if (preys.size() > 0) {
+                    data_[i] /= preys.size();
+                    data.get(i).add(new PVector(Sketch.time / 60, data_[i]));
+                }
+                if (predators.size() > 0) {
+                    data_[i + 6] /= predators.size();
+                    data.get(i + 6).add(new PVector(Sketch.time / 60, data_[i + 6]));
+                }
             }
         }
     }

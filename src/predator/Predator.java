@@ -98,10 +98,10 @@ public class Predator {
     }
 
     public void info() {
-        if (true || Sketch.showEnergy) {
+        if (Sketch.showEnergy) {
             energyBar();
         }
-        if (true ||Sketch.showVision) {
+        if (Sketch.showVision) {
             visionCircle();
         }
     }
