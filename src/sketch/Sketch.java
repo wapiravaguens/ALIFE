@@ -12,12 +12,13 @@ public class Sketch extends PApplet {
     public static boolean showPreyPredator;
     public static boolean showEnergy;
     public static boolean showVision;
-    public static boolean complete;
+    public static boolean complete; //?
     public static int speed;
     public static long time;
+    public static float zoom;
     public static int width_;
     public static int height_;
-    public static float zoom;
+
 
     public PImage background;
     public Aquarium aquarium;
@@ -53,8 +54,8 @@ public class Sketch extends PApplet {
         image(background, 0, 0);
        
         for (int i = 0; i < speed; i++) {
-            time++;
             aquarium.update();
+            time++;
         }
         
         pushMatrix();
@@ -100,9 +101,9 @@ public class Sketch extends PApplet {
         String[] processingArgs = {"ALIFE"};
         Sketch sk = new Sketch();
         PApplet.runSketch(processingArgs, sk);
-//        String[] processingArgs2 = {"Chart"};
-//        Line sk2 = new Line();
-//        PApplet.runSketch(processingArgs2, sk2);
+        String[] processingArgs2 = {"Charts"};
+        Line sk2 = new Line();
+        PApplet.runSketch(processingArgs2, sk2);
     }
 
     public void info() {
@@ -110,7 +111,7 @@ public class Sketch extends PApplet {
         textSize(32);
         if (showFrameRate) {
             text(frameRate, 10, 40);
-            text(time/60, 10, 80);
+            text(time/60, 10, 80); //change
         }
         if (showPreyPredator) {
             text("Predators: " + aquarium.predators.size(), width - 260, 40);

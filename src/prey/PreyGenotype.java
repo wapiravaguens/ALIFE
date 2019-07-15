@@ -4,14 +4,24 @@ import java.util.Random;
 
 public class PreyGenotype {
 
+    // Form
     public float initSize, finalSize;
+    public float shearX;
+    
+    // Skin
+    public int[] color1, color2;
+    public int param;
+    
+    // Movement
+    public float vision;
+    public float maxspeed, maxforce;
+    public float fSep, fAli, fCoh;
+    
+    // Metabolism and age
     public float eLife, eRepro, eMax;
     public int expectedAge, adultAge;
-    public float vision;
-    public int[] color1;
-    public int[] color2;
-    public int param;
-    public float shearX;
+    
+    
 
     public PreyGenotype(float initSize, float finalSize, float eLife, float eRepro, float eMax, int expectedAge, int adultAge, float vision, int[] color1, int[] color2, int param, float shearX) {
         this.initSize = initSize;
@@ -100,15 +110,15 @@ public class PreyGenotype {
         code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize,
         code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize,
         
-        code[2] = ((rand.nextFloat() * 0.25f) + 0.5f); //eLife,
+        code[2] = ((rand.nextFloat() * 2.0f) + 0.5f); //eLife,
         
         code[3] = ((rand.nextFloat() * 1.25f) + 10.0f) * 60.0f; //eRepro,
         code[4] = ((rand.nextFloat() * 2.5f) + 20.0f) * 60.0f; //eMax,
         
         code[5] = (int) (((rand.nextFloat() * 5.0f) + 60.0f) * 60.0f); //expectedAge,
-        code[6] = (int) (((rand.nextFloat() * 2.0f) + 30.0f) * 60.0f); //adultAge,
+        code[6] = (int) (((rand.nextFloat() * 2.0f) + 15.0f) * 60.0f); //adultAge,
         
-        code[7] = 50.0f + (rand.nextFloat() * 30.0f); //vision,
+        code[7] = 50.0f + (rand.nextFloat() * 50.0f); //vision,
         code[8] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color1,
         code[9] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color2,
         code[10] = rand.nextInt(5); //Param

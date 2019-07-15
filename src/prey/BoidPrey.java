@@ -4,6 +4,7 @@ import food.Food;
 import java.util.Collections;
 import predator.Predator;
 import java.util.ArrayList;
+import java.util.Random;
 import processing.core.*;
 import quadTree.*;
 import sketch.Sketch;
@@ -11,6 +12,7 @@ import sketch.Sketch;
 public class BoidPrey extends Prey {
 
     public boolean eat = false;
+
 
     public BoidPrey(PApplet sk, float x, float y, PreyGenotype gen) {
         super(sk, x, y, gen);
@@ -36,9 +38,9 @@ public class BoidPrey extends Prey {
         
         avop.mult(100.0f);
         food.mult(foodWeight);
-        sep.mult(1.5f);
-        ali.mult(1.0f);
-        coh.mult(1.0f);
+        sep.mult(sep_);
+        ali.mult(ali_);
+        coh.mult(coh_);
         
         applyForce(avop);
         applyForce(food);

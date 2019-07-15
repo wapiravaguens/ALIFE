@@ -24,11 +24,17 @@ public class Aquarium {
     public QuadTree qFoodL;
 
     public static TuringMorph turingMorph;
+    public static ArrayList<ArrayList<PVector>> data = new ArrayList<>();
 
     public Aquarium(PApplet sk) {
         this.sk = sk;
         this.turingMorph = new TuringMorph(sk, 100, 100, 2000);
         limit = new Rectangle(Sketch.width_ / 2, Sketch.height_ / 2, Sketch.width_, Sketch.height_);
+        
+        // Chart data arrays initialization
+        for (int i = 0; i < 3; i++) {
+            this.data.add(new ArrayList<PVector>());
+        }
 
         this.foodGenerator = new FoodGenerator(sk);
         this.preys = new ArrayList<>();
@@ -41,9 +47,9 @@ public class Aquarium {
     public void make() {
         for (int i = 0; i < 100; i++) {
 //            preys.add(new BoidPrey(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PreyGenotype.random()));
-            preys.add(new BoidPrey(sk, Sketch.width_/2, Sketch.height_/2, PreyGenotype.random()));
+            preys.add(new BoidPrey(sk, Sketch.width_ / 2, Sketch.height_ / 2, PreyGenotype.random()));
         }
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 0; i++) {
             predators.add(new BoidPredator(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PredatorGenotype.random()));
         }
     }
@@ -72,26 +78,7 @@ public class Aquarium {
         predatorReproduction();
         preysPredatorsDeath();
         updateQTrees();
-
-//        float sum = 0;
-//        float sum2 = 0;
-//        double sum3 = 0;
-//        if (Sketch.time % 60 == 0) {
-//            for (Prey prey : preys) {
-//                sum += prey.gen.vision;
-//                sum2 += prey.gen.eLife;
-//                sum3 += prey.gen.finalSize;
-//            }
-//            sum = sum / preys.size();
-//            sum2 = sum2 / preys.size();
-//            sum3 = sum3 / preys.size();
-//            System.out.println("Mean Vision: " +  sum);
-//            System.out.println("Mean E: " +  sum2);
-//            System.out.println("Size: " + sum3);
-//            System.out.println("");
-//            PVector dataVision = new PVector(Sketch.time / 60, sum2);
-//            data.add(dataVision);
-//        }
+        updateChartsData();
     }
 
     public void updateQTrees() {
@@ -215,4 +202,29 @@ public class Aquarium {
         }
     }
 
+    public void updateChartsData() {
+        if (Sketch.time % 60 == 0) {
+            float sum = 0;
+            float sum2 = 0;
+            float sum3 = 0;
+            for (Prey prey : preys) {
+                sum += prey.ali_;
+                sum2 += prey.coh_;
+                sum3 += prey.sep_;
+            }
+            sum = sum / preys.size();
+            sum2 = sum2 / preys.size();
+            sum3 = sum3 / preys.size();
+            System.out.println("Mean Vision: " + sum);
+            System.out.println("Mean E: " + sum2);
+            System.out.println("Size: " + sum3);
+            System.out.println("");
+            PVector dataVision = new PVector(Sketch.time / 60, sum);
+            PVector dataEnergy = new PVector(Sketch.time / 60, sum2);
+            PVector dataSize = new PVector(Sketch.time / 60, sum3);
+            data.get(0).add(dataVision);
+            data.get(1).add(dataEnergy);
+            data.get(2).add(dataSize);
+        }
+    }
 }

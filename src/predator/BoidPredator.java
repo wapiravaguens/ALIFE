@@ -31,7 +31,7 @@ public class BoidPredator extends Predator {
         ali.mult(1.0f);
         coh.mult(1.0f);
         // Add the force vectors to acceleration
-        applyForce(hunt);
+        //applyForce(hunt);
         applyForce(sep);
         applyForce(ali);
         applyForce(coh);
