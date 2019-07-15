@@ -30,9 +30,9 @@ public class Aquarium {
         this.sk = sk;
         this.turingMorph = new TuringMorph(sk, 100, 100, 2000);
         limit = new Rectangle(Sketch.width_ / 2, Sketch.height_ / 2, Sketch.width_, Sketch.height_);
-        
+
         // Chart data arrays initialization
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 12; i++) {
             this.data.add(new ArrayList<PVector>());
         }
 
@@ -204,27 +204,29 @@ public class Aquarium {
 
     public void updateChartsData() {
         if (Sketch.time % 60 == 0) {
-            float sum = 0;
-            float sum2 = 0;
-            float sum3 = 0;
+            float data_[] = new float[12];
             for (Prey prey : preys) {
-                sum += prey.gen.vision;
-                sum2 += prey.gen.eLife;
-                sum3 += prey.gen.maxspeed;
+                data_[0] += prey.gen.eMax;
+                data_[1] += prey.gen.eLife;
+                data_[2] += prey.gen.finalSize;
+                data_[3] += prey.gen.vision;
+                data_[4] += prey.gen.maxspeed;
+                data_[5] += prey.gen.maxforce;
             }
-            sum = sum / preys.size();
-            sum2 = sum2 / preys.size();
-            sum3 = sum3 / preys.size();
-            System.out.println("Mean Vision: " + sum);
-            System.out.println("Mean E: " + sum2);
-            System.out.println("Size: " + sum3);
-            System.out.println("");
-            PVector dataVision = new PVector(Sketch.time / 60, sum);
-            PVector dataEnergy = new PVector(Sketch.time / 60, sum2);
-            PVector dataSize = new PVector(Sketch.time / 60, sum3);
-            data.get(0).add(dataVision);
-            data.get(1).add(dataEnergy);
-            data.get(2).add(dataSize);
+            for (Predator predator : predators) {
+                data_[6] += predator.gen.eMax;
+                data_[7] += predator.gen.eLife;
+                data_[8] += predator.gen.finalSize;
+                data_[9] += predator.gen.vision;
+                data_[10] += predator.gen.maxspeed;
+                data_[11] += predator.gen.maxforce;
+            }
+            for (int i = 0; i < 6; i++) {
+                data_[i] /= preys.size();
+                data.get(i).add(new PVector(Sketch.time / 60, data_[i]));
+                data_[i+6] /= predators.size();
+                data.get(i+6).add(new PVector(Sketch.time / 60, data_[i+6]));
+            }
         }
     }
 }

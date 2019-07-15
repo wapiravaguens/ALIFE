@@ -1,6 +1,6 @@
 package sketch;
 
-import charts.Line;
+import charts.Charts;
 import aquarium.Aquarium;
 import processing.core.*;
 import processing.event.MouseEvent;
@@ -102,7 +102,7 @@ public class Sketch extends PApplet {
         Sketch sk = new Sketch();
         PApplet.runSketch(processingArgs, sk);
         String[] processingArgs2 = {"Charts"};
-        Line sk2 = new Line();
+        Charts sk2 = new Charts();
         PApplet.runSketch(processingArgs2, sk2);
     }
 
