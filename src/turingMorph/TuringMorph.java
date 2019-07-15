@@ -10,6 +10,7 @@ public class TuringMorph {
     public int rows, cols;
     public float[][][] A, B;
 
+    // Du, Dv, u, v
     public float[][] params = {{0.16f, 0.08f, 0.035f, 0.06f},
     {0.16f, 0.08f, 0.042f, 0.065f},
     {0.14f, 0.06f, 0.035f, 0.065f},

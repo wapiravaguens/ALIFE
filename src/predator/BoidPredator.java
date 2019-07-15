@@ -1,6 +1,7 @@
 package predator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import prey.Prey;
 import processing.core.*;
 import quadTree.*;
@@ -148,6 +149,7 @@ public class BoidPredator extends Predator {
         Circle range = new Circle(position.x, position.y, gen.vision);
         ArrayList<Point> preys = new ArrayList();
         qPreys.query(range, preys);
+        Collections.shuffle(preys);
         for (Point p : preys) {
             Prey other = (Prey) p.obj;
             sum.add(other.position); // Add position

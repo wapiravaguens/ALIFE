@@ -78,7 +78,7 @@ public class QuadTree {
     public void show() {
         sk.pushStyle();
         sk.stroke(255);
-        sk.strokeWeight(1);
+        sk.strokeWeight(3);
         sk.noFill();
         sk.rectMode(PApplet.CENTER);
         sk.rect(boundary.x, boundary.y, boundary.w * 2, boundary.h * 2);

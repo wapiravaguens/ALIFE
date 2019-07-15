@@ -6,7 +6,7 @@ import processing.core.PVector;
 public class Food {
 
     public PApplet sk;
-    public static float size = 10;
+    public static float size = 20;
 
     public PVector position;
     public float currentLevel;

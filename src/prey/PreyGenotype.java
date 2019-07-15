@@ -120,23 +120,23 @@ public class PreyGenotype {
     public static Object[] randomValues() {
         Random rand = new Random();
         Object[] code = new Object[17];
-        code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize,
-        code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize,
-        code[2] = rand.nextFloat() * 30.0f; //shearX,
-        code[3] = rand.nextInt(5); //param,
-        code[4] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color1,
-        code[5] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color2,
-        code[6] = ((rand.nextFloat() * 1.5f) + 0.5f); //eLife,
-        code[7] = ((rand.nextFloat() * 1.25f) + 7.0f) * 60.0f; //eRepro,
-        code[8] = ((rand.nextFloat() * 2.5f) + 20.0f) * 60.0f; //eMax,
-        code[9] = (int) (((rand.nextFloat() * 5.0f) + 60.0f) * 60.0f); //expectedAge,
-        code[10] = (int) (((rand.nextFloat() * 2.0f) + 15.0f) * 60.0f); //adultAge
-        code[11] = 30.0f + (rand.nextFloat() * 50.0f); //vision
+        code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize >
+        code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize >
+        code[2] = rand.nextFloat() * 30.0f; //shearX >
+        code[3] = rand.nextInt(5); //param >
+        code[4] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color1 >
+        code[5] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color2 >
+        code[6] = (float) ((rand.nextGaussian() * 0.20) + 1.0f); //eLife >
+        code[7] = (float) ((rand.nextGaussian() * 1.25f) + 5.0f) * 60.0f; //eRepro >
+        code[8] = (float) ((rand.nextGaussian() * 3.0f) + 20.0f) * 60.0f; //eMax >
+        code[9] = (int) (((rand.nextFloat() * 5.0f) + 60.0f) * 60.0f); //expectedAge >
+        code[10] = (int) (((rand.nextFloat() * 2.0f) + 20.0f) * 60.0f); //adultAge 
+        code[11] = 30.0f + (rand.nextFloat() * 45.0f); //vision >
         code[12] = (float) ((rand.nextGaussian() * 0.1) + 1.5f); //fSep
         code[13] = (float) ((rand.nextGaussian() * 0.1) + 1.0f); //fAli
         code[14] = (float) ((rand.nextGaussian() * 0.1) + 1.0f); //fCoh
-        code[15] = (float) ((rand.nextGaussian() * 0.01) + 0.05f); //maxforce
-        code[16] = (float) ((rand.nextGaussian() * 0.5) + 3.0f); //maxspeed
+        code[15] = (float) ((rand.nextGaussian() * 0.03) + 0.05f); //maxforce
+        code[16] = (float) ((rand.nextGaussian() * 0.33) + 3.0f); //maxspeed
         return code;
     }
 

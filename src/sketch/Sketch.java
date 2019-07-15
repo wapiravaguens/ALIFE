@@ -12,13 +12,12 @@ public class Sketch extends PApplet {
     public static boolean showPreyPredator;
     public static boolean showEnergy;
     public static boolean showVision;
-    public static boolean complete; //?
+    public static boolean showTime;
     public static int speed;
     public static long time;
     public static float zoom;
     public static int width_;
     public static int height_;
-
 
     public PImage background;
     public Aquarium aquarium;
@@ -38,12 +37,13 @@ public class Sketch extends PApplet {
         showPreyPredator = true;
         showEnergy = false;
         showVision = false;
+        showTime = true;
         speed = 1;
         time = 0;
         zoom = 1.0f;
         width_ = (int) (width * zoom);
         height_ = (int) (height * zoom);
-        
+
         background = loadImage("background.jpg");
         background.resize(width_, height_);
         aquarium = new Aquarium(this);
@@ -51,18 +51,21 @@ public class Sketch extends PApplet {
 
     @Override
     public void draw() {
+        background(255);
         image(background, 0, 0);
-       
+
         for (int i = 0; i < speed; i++) {
             aquarium.update();
             time++;
         }
-        
+
         pushMatrix();
-        scale(1.0f/zoom);
-        aquarium.render();  
+        translate(mouseX, mouseY);
+        scale(1.0f / zoom);
+        translate(-mouseX, -mouseY);
+        aquarium.render();
         popMatrix();
-        
+
         info();
     }
 
@@ -86,16 +89,18 @@ public class Sketch extends PApplet {
         if (key == '-') {
             speed = max(1, speed / 2);
         }
-        if (key == ' ') {
-            complete = !complete;
+        if (key == 't') {
+            showTime = !showTime;
         }
     }
 
-//    @Override
-//    public void mouseWheel(MouseEvent event) {
-//        float e = event.getCount();
-//        zoom = min(1.5f, zoom + e/50);
-//    }
+    @Override
+    public void mouseWheel(MouseEvent event) {
+        float e = event.getCount();
+        zoom = zoom + e / 50;
+        zoom = min(1.0f, zoom);
+        zoom = max(0.52f ,zoom);
+    }
 
     public static void main(String[] args) {
         String[] processingArgs = {"ALIFE"};
@@ -110,8 +115,10 @@ public class Sketch extends PApplet {
         pushStyle();
         textSize(32);
         if (showFrameRate) {
-            text(frameRate, 10, 40);
-            text(time/60, 10, 80); //change
+            text(nf(frameRate, 1, 2), 10, 40);
+        }
+        if (showTime) {
+            text(time / 60 + "s", 10, height - 15); //change
         }
         if (showPreyPredator) {
             text("Predators: " + aquarium.predators.size(), width - 260, 40);

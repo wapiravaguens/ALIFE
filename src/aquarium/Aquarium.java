@@ -49,7 +49,7 @@ public class Aquarium {
 //            preys.add(new BoidPrey(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PreyGenotype.random()));
             preys.add(new BoidPrey(sk, Sketch.width_ / 2, Sketch.height_ / 2, PreyGenotype.random()));
         }
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 20; i++) {
             predators.add(new BoidPredator(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PredatorGenotype.random()));
         }
     }
@@ -86,7 +86,7 @@ public class Aquarium {
         for (Prey prey : preys) {
             qPreys.insert(new Point(prey));
         }
-        //qpreys.show();
+        //qPreys.show();
         qPredators = new QuadTree(sk, limit, 25);
         for (Predator predator : predators) {
             qPredators.insert(new Point(predator));
@@ -110,6 +110,7 @@ public class Aquarium {
                 if (dist > 0 && dist < (predator.size / 2 + prey.size / 2)) {
                     predator.eat(prey.energy);
                     preys.remove(prey);
+                    break;
                 }
             }
         }
@@ -126,6 +127,7 @@ public class Aquarium {
                 if (dist > 0 && dist < (prey.size / 2 + food.size / 2)) {
                     float energyPlus = prey.eat(food.currentLevel);
                     food.currentLevel = food.currentLevel - energyPlus;
+                    break;
                 }
             }
         }
