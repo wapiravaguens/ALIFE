@@ -24,22 +24,12 @@ public class Prey {
     public PVector position;
     public PVector velocity;
     public PVector acceleration;
-    public float maxforce;    // Maximum steering force
-    public float maxspeed;    // Maximum speed
-
-    public float sep_;
-    public float ali_;
-    public float coh_;
 
     public Prey(PApplet sk, float x, float y, PreyGenotype gen) {
         this.sk = sk;
         this.gen = gen;
         this.img = sk.loadImage("prey.png");
         Aquarium.turingMorph.paint(img, gen.color1, gen.color2, gen.param);
-
-        this.sep_ = sk.random(0.5f) + 1.5f;
-        this.ali_ = sk.random(0.5f) + 1.0f;
-        this.coh_ = sk.random(0.5f) + 1.0f;
 
         // Life
         this.age = 0;
@@ -51,17 +41,13 @@ public class Prey {
         this.position = new PVector(x, y);
         this.velocity = new PVector(sk.random(-1.0f, 1.0f), sk.random(-1.0f, 1.0f));
         this.acceleration = new PVector(0, 0);
-        this.maxspeed = 3.0f;
-        this.maxforce = 0.05f;
     }
 
     public void render() {
         sk.pushStyle();
         sk.pushMatrix();
-
         // Scale and ShearX
         AffineTransformation.transformPrey(sk, this);
-
         // Orientation
         float theta = velocity.heading();
         if (theta < PApplet.PI / 2 && theta > -PApplet.PI / 2) {
@@ -70,7 +56,6 @@ public class Prey {
         } else {
             sk.translate(position.x, position.y);
         }
-
         // Draw image
         sk.imageMode(PApplet.CENTER);
         sk.image(img, 0, 0);
@@ -89,7 +74,7 @@ public class Prey {
         // Update velocity
         velocity.add(acceleration);
         // Limit speed
-        velocity.limit(maxspeed);
+        velocity.limit(gen.maxspeed);
         position.add(velocity);
         // Reset accelertion to 0 each cycle
         acceleration.mult(0);

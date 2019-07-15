@@ -20,9 +20,9 @@ public class BoidPrey extends Prey {
 
     @Override
     public void move(QuadTree qPreys, QuadTree qPredators, QuadTree qFoodL) {
-        float foodWeight = 1.0f;
+        float fFood = 0.5f;
         if (energy <= gen.eMax * 0.30 || eat) {
-            foodWeight = 30;
+            fFood = 30.0f;
             eat = true;
             if (energy > gen.eMax * 0.70) {
                 eat = false;
@@ -35,12 +35,11 @@ public class BoidPrey extends Prey {
         PVector ali = align(qPreys);      // Alignment
         PVector coh = cohesion(qPreys);   // Cohesion  
         
-        
         avop.mult(100.0f);
-        food.mult(foodWeight);
-        sep.mult(sep_);
-        ali.mult(ali_);
-        coh.mult(coh_);
+        food.mult(fFood);
+        sep.mult(gen.fSep);
+        ali.mult(gen.fAli);
+        coh.mult(gen.fCoh);
         
         applyForce(avop);
         applyForce(food);
@@ -51,7 +50,7 @@ public class BoidPrey extends Prey {
         // Update velocity
         velocity.add(acceleration);
         // Limit speed
-        velocity.limit(maxspeed);
+        velocity.limit(gen.maxspeed);
         position.add(velocity);
         // Reset accelertion to 0 each cycle
         acceleration.mult(0);
@@ -76,7 +75,7 @@ public class BoidPrey extends Prey {
                 steerTotal.add(steer);
             }
         }
-        return steerTotal.limit(maxforce);
+        return steerTotal.limit(gen.maxforce);
     }
 
     // Separation
@@ -110,9 +109,9 @@ public class BoidPrey extends Prey {
         if (steer.mag() > 0) {
             // Implement Reynolds: Steering = Desired - Velocity
             steer.normalize();
-            steer.mult(maxspeed);
+            steer.mult(gen.maxspeed);
             steer.sub(velocity);
-            steer.limit(maxforce);
+            steer.limit(gen.maxforce);
         }
         return steer;
     }
@@ -129,7 +128,7 @@ public class BoidPrey extends Prey {
         for (Point p : preys) {
             Prey other = (Prey) p.obj;
             float d = PVector.dist(position, other.position);
-            if ((d > 0) && (d < neighbordist)) {
+            if ((d > 0) && (d < gen.vision)) {
                 sum.add(other.velocity);
                 count++;
             }
@@ -137,9 +136,9 @@ public class BoidPrey extends Prey {
         if (count > 0) {
             sum.div((float) count);
             sum.normalize();
-            sum.mult(maxspeed);
+            sum.mult(gen.maxspeed);
             PVector steer = PVector.sub(sum, velocity);
-            steer.limit(maxforce);
+            steer.limit(gen.maxforce);
             return steer;
         } else {
             return new PVector(0, 0);
@@ -158,7 +157,7 @@ public class BoidPrey extends Prey {
         for (Point p : preys) {
             Prey other = (Prey) p.obj;
             float d = PVector.dist(position, other.position);
-            if ((d > 0) && (d < neighbordist)) {
+            if ((d > 0) && (d < gen.vision)) {
                 sum.add(other.position); // Add position
                 count++;
             }
@@ -207,10 +206,10 @@ public class BoidPrey extends Prey {
         PVector desired = PVector.sub(target, position);  // A vector pointing from the position to the target
         // Normalize desired and scale to maximum speed
         desired.normalize();
-        desired.mult(maxspeed);
+        desired.mult(gen.maxspeed);
         // Steering = Desired minus Velocity
         PVector steer = PVector.sub(desired, velocity);
-        steer.limit(maxforce);  // Limit to maximum steering force
+        steer.limit(gen.maxforce);  // Limit to maximum steering force
         return steer;
     }
 

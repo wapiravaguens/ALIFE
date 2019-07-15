@@ -8,7 +8,7 @@ import sketch.Sketch;
 
 public class BoidPredator extends Predator {
 
-    public boolean eat = false;
+//    public boolean eat = false;
 
     public BoidPredator(PApplet sk, float x, float y, PredatorGenotype gen) {
         super(sk, x, y, gen);
@@ -16,30 +16,31 @@ public class BoidPredator extends Predator {
 
     @Override
     public void move(QuadTree qPreys, QuadTree qPredators, QuadTree qFoodL) {
-        float foodWeight = 0.0f;
-        if (energy <= gen.eMax * 0.50) {
-            foodWeight = 100;
+        float fHunt = 0.0f;
+        if (energy <= gen.eMax * 0.60) {
+            fHunt = 100.0f;
         }
 
         PVector hunt = hunt(qPreys);   // Cohesion
         PVector sep = separate(qPredators);   // Separation
         PVector ali = align(qPredators);      // Alignment
         PVector coh = cohesion(qPredators);   // Cohesion
-        // Arbitrarily weight these forces
-        hunt.mult(foodWeight);
-        sep.mult(1.5f);
-        ali.mult(1.0f);
-        coh.mult(1.0f);
-        // Add the force vectors to acceleration
-        //applyForce(hunt);
+        
+        hunt.mult(fHunt);
+        sep.mult(gen.fSep);
+        ali.mult(gen.fAli);
+        coh.mult(gen.fCoh);
+        
+        applyForce(hunt);
         applyForce(sep);
         applyForce(ali);
         applyForce(coh);
+        
         // Update velocity
-        acceleration.limit(maxforce);
+        acceleration.limit(gen.maxforce);
         velocity.add(acceleration);
         // Limit speed
-        velocity.limit(maxspeed);
+        velocity.limit(gen.maxspeed);
         position.add(velocity);
         // Reset accelertion to 0 each cycle
         acceleration.mult(0);
@@ -78,9 +79,9 @@ public class BoidPredator extends Predator {
         if (steer.mag() > 0) {
             // Implement Reynolds: Steering = Desired - Velocity
             steer.normalize();
-            steer.mult(maxspeed);
+            steer.mult(gen.maxspeed);
             steer.sub(velocity);
-            steer.limit(maxforce);
+            steer.limit(gen.maxforce);
         }
         return steer;
     }
@@ -97,7 +98,7 @@ public class BoidPredator extends Predator {
         for (Point p : predators) {
             Predator other = (Predator) p.obj;
             float d = PVector.dist(position, other.position);
-            if ((d > 0) && (d < neighbordist)) {
+            if ((d > 0) && (d < gen.vision)) {
                 sum.add(other.velocity);
                 count++;
             }
@@ -105,9 +106,9 @@ public class BoidPredator extends Predator {
         if (count > 0) {
             sum.div((float) count);
             sum.normalize();
-            sum.mult(maxspeed);
+            sum.mult(gen.maxspeed);
             PVector steer = PVector.sub(sum, velocity);
-            steer.limit(maxforce);
+            steer.limit(gen.maxforce);
             return steer;
         } else {
             return new PVector(0, 0);
@@ -126,7 +127,7 @@ public class BoidPredator extends Predator {
         for (Point p : predators) {
             Predator other = (Predator) p.obj;
             float d = PVector.dist(position, other.position);
-            if ((d > 0) && (d < neighbordist)) {
+            if ((d > 0) && (d < gen.vision)) {
                 sum.add(other.position); // Add position
                 count++;
             }
@@ -172,10 +173,10 @@ public class BoidPredator extends Predator {
         PVector desired = PVector.sub(target, position);  // A vector pointing from the position to the target
         // Normalize desired and scale to maximum speed
         desired.normalize();
-        desired.mult(maxspeed);
+        desired.mult(gen.maxspeed);
         // Steering = Desired minus Velocity
         PVector steer = PVector.sub(desired, velocity);
-        steer.limit(maxforce);  // Limit to maximum steering force
+        steer.limit(gen.maxforce);  // Limit to maximum steering force
         return steer;
     }
 

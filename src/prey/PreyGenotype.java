@@ -7,35 +7,38 @@ public class PreyGenotype {
     // Form
     public float initSize, finalSize;
     public float shearX;
-    
+
     // Skin
-    public int[] color1, color2;
     public int param;
-    
-    // Movement
-    public float vision;
-    public float maxspeed, maxforce;
-    public float fSep, fAli, fCoh;
-    
+    public int[] color1, color2;
+
     // Metabolism and age
     public float eLife, eRepro, eMax;
     public int expectedAge, adultAge;
-    
-    
 
-    public PreyGenotype(float initSize, float finalSize, float eLife, float eRepro, float eMax, int expectedAge, int adultAge, float vision, int[] color1, int[] color2, int param, float shearX) {
+    // Movement
+    public float vision;
+    public float fSep, fAli, fCoh;
+    public float maxforce, maxspeed;
+
+    public PreyGenotype(float initSize, float finalSize, float shearX, int param, int[] color1, int[] color2, float eLife, float eRepro, float eMax, int expectedAge, int adultAge, float vision, float fSep, float fAli, float fCoh, float maxforce, float maxspeed) {
         this.initSize = initSize;
         this.finalSize = finalSize;
+        this.shearX = shearX;
+        this.param = param;
+        this.color1 = color1;
+        this.color2 = color2;
         this.eLife = eLife;
         this.eRepro = eRepro;
         this.eMax = eMax;
         this.expectedAge = expectedAge;
         this.adultAge = adultAge;
         this.vision = vision;
-        this.color1 = color1;
-        this.color2 = color2;
-        this.param = param;
-        this.shearX = shearX;
+        this.fSep = fSep;
+        this.fAli = fAli;
+        this.fCoh = fCoh;
+        this.maxforce = maxforce;
+        this.maxspeed = maxspeed;
     }
 
     public static PreyGenotype[] offsprings(PreyGenotype gen1, PreyGenotype gen2) {
@@ -73,56 +76,67 @@ public class PreyGenotype {
     }
 
     public static Object[] createRawGeneticCode(PreyGenotype gen) {
-        Object[] code = new Object[12];
+        Object[] code = new Object[17];
         code[0] = gen.initSize;
         code[1] = gen.finalSize;
-        code[2] = gen.eLife;
-        code[3] = gen.eRepro;
-        code[4] = gen.eMax;
-        code[5] = gen.expectedAge;
-        code[6] = gen.adultAge;
-        code[7] = gen.vision;
-        code[8] = gen.color1;
-        code[9] = gen.color2;
-        code[10] = gen.param;
-        code[11] = gen.shearX;
+        code[2] = gen.shearX;
+        code[3] = gen.param;
+        code[4] = gen.color1;
+        code[5] = gen.color2;
+        code[6] = gen.eLife;
+        code[7] = gen.eRepro;
+        code[8] = gen.eMax;
+        code[9] = gen.expectedAge;
+        code[10] = gen.adultAge;
+        code[11] = gen.vision;
+        code[12] = gen.fSep;
+        code[13] = gen.fAli;
+        code[14] = gen.fCoh;
+        code[15] = gen.maxforce;
+        code[16] = gen.maxspeed;
         return code;
     }
 
     public static PreyGenotype decodeGeneticCode(Object[] code) {
         return new PreyGenotype((float) code[0], //initSize,
                 (float) code[1], //finalSize,
-                (float) code[2], //eLife,
-                (float) code[3], //eRepro,
-                (float) code[4], //eMax,
-                (int) code[5], //expectedAge,
-                (int) code[6], //adultAge,
-                (float) code[7], //vision,
-                (int[]) code[8], //color1,
-                (int[]) code[9], //color2,
-                (int) code[10], //Param
-                (float) code[11]); //shearX
+                (float) code[2], //shearX,
+                (int) code[3], //param,
+                (int[]) code[4], //color1,
+                (int[]) code[5], //color2,
+                (float) code[6], //eLife,
+                (float) code[7], //eRepro,
+                (float) code[8], //eMax,
+                (int) code[9], //expectedAge,
+                (int) code[10], //adultAge
+                (float) code[11], //vision
+                (float) code[12], //fSep
+                (float) code[13], //fAli
+                (float) code[14], //fCoh
+                (float) code[15], //maxforce
+                (float) code[16]); //maxspeed
     }
 
     public static Object[] randomValues() {
         Random rand = new Random();
-        Object[] code = new Object[12];
+        Object[] code = new Object[17];
         code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize,
         code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize,
-        
-        code[2] = ((rand.nextFloat() * 2.0f) + 0.5f); //eLife,
-        
-        code[3] = ((rand.nextFloat() * 1.25f) + 10.0f) * 60.0f; //eRepro,
-        code[4] = ((rand.nextFloat() * 2.5f) + 20.0f) * 60.0f; //eMax,
-        
-        code[5] = (int) (((rand.nextFloat() * 5.0f) + 60.0f) * 60.0f); //expectedAge,
-        code[6] = (int) (((rand.nextFloat() * 2.0f) + 15.0f) * 60.0f); //adultAge,
-        
-        code[7] = 50.0f + (rand.nextFloat() * 50.0f); //vision,
-        code[8] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color1,
-        code[9] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color2,
-        code[10] = rand.nextInt(5); //Param
-        code[11] = rand.nextFloat() * 30.0f; //shearX
+        code[2] = rand.nextFloat() * 30.0f; //shearX,
+        code[3] = rand.nextInt(5); //param,
+        code[4] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color1,
+        code[5] = new int[]{rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)}; //color2,
+        code[6] = ((rand.nextFloat() * 1.5f) + 0.5f); //eLife,
+        code[7] = ((rand.nextFloat() * 1.25f) + 7.0f) * 60.0f; //eRepro,
+        code[8] = ((rand.nextFloat() * 2.5f) + 20.0f) * 60.0f; //eMax,
+        code[9] = (int) (((rand.nextFloat() * 5.0f) + 60.0f) * 60.0f); //expectedAge,
+        code[10] = (int) (((rand.nextFloat() * 2.0f) + 15.0f) * 60.0f); //adultAge
+        code[11] = 30.0f + (rand.nextFloat() * 50.0f); //vision
+        code[12] = (float) ((rand.nextGaussian() * 0.1) + 1.5f); //fSep
+        code[13] = (float) ((rand.nextGaussian() * 0.1) + 1.0f); //fAli
+        code[14] = (float) ((rand.nextGaussian() * 0.1) + 1.0f); //fCoh
+        code[15] = (float) ((rand.nextGaussian() * 0.01) + 0.05f); //maxforce
+        code[16] = (float) ((rand.nextGaussian() * 0.5) + 3.0f); //maxspeed
         return code;
     }
 

@@ -24,8 +24,6 @@ public class Predator {
     public PVector position;
     public PVector velocity;
     public PVector acceleration;
-    public float maxforce;    // Maximum steering force
-    public float maxspeed;    // Maximum speed
 
     public Predator(PApplet sk, float x, float y, PredatorGenotype gen) {
         this.sk = sk;
@@ -44,17 +42,13 @@ public class Predator {
         this.position = new PVector(x, y);
         this.velocity = new PVector(sk.random(-1.0f, 1.0f), sk.random(-1.0f, 1.0f));
         this.acceleration = new PVector(0, 0);
-        this.maxspeed = 4.0f;
-        this.maxforce = 0.15f;
     }
 
     public void render() {
         sk.pushStyle();
         sk.pushMatrix();
-        
         // Scale and ShearX
         AffineTransformation.transformPredator(sk, this);
-        
         // Orientation
         float theta = velocity.heading();
         if (theta < PApplet.PI / 2 && theta > -PApplet.PI / 2) {
@@ -63,7 +57,6 @@ public class Predator {
         } else {
             sk.translate(position.x, position.y);
         }
-
         // Draw image
         sk.imageMode(PApplet.CENTER);
         sk.image(img, 0, 0);
@@ -82,7 +75,7 @@ public class Predator {
         // Update velocity
         velocity.add(acceleration);
         // Limit speed
-        velocity.limit(maxspeed);
+        velocity.limit(gen.maxspeed);
         position.add(velocity);
         // Reset accelertion to 0 each cycle
         acceleration.mult(0);
@@ -105,10 +98,10 @@ public class Predator {
     }
 
     public void info() {
-        if (Sketch.showEnergy) {
+        if (true || Sketch.showEnergy) {
             energyBar();
         }
-        if (Sketch.showVision) {
+        if (true ||Sketch.showVision) {
             visionCircle();
         }
     }
