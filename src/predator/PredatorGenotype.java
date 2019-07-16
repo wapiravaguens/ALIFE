@@ -120,23 +120,23 @@ public class PredatorGenotype {
     public static Object[] randomValues() {
         Random rand = new Random();
         Object[] code = new Object[17];
-        code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize >
-        code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize >
-        code[2] = rand.nextFloat() * 30.0f; //shearX >
-        code[3] = rand.nextInt(5); //param >
-        code[4] = new int[]{rand.nextInt(128) + 128, 0, 0}; //color1 >
-        code[5] = new int[]{0, 0, 0}; //color2 >
-        code[6] = (float) ((rand.nextGaussian() * 0.5) + 1.5f); //eLife >
-        code[7] = (float) ((rand.nextGaussian() * 1.25f) + 5.0f) * 60.0f; //eRepro >
-        code[8] = (float) ((rand.nextGaussian() * 3.0f) + 20.0f) * 60.0f; //eMax >
-        code[9] = (int) (((rand.nextFloat() * 5.0f) + 60.0f) * 60.0f); //expectedAge >
-        code[10] = (int) (((rand.nextFloat() * 2.0f) + 30.0f) * 60.0f); //adultAge 
-        code[11] = 45.0f + (rand.nextFloat() * 45.0f); //vision >
-        code[12] = (float) ((rand.nextGaussian() * 0.1) + 1.5f); //fSep >
-        code[13] = (float) ((rand.nextGaussian() * 0.1) + 1.0f); //fAli >
-        code[14] = (float) ((rand.nextGaussian() * 0.1) + 1.25f); //fCoh >
-        code[15] = (float) ((rand.nextGaussian() * 0.02) + 0.15f); //maxforce >
-        code[16] = (float) ((rand.nextGaussian() * 0.20) + 4.2f); //maxspeed >
+        code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize,
+        code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize,
+        code[2] = rand.nextFloat() * 30.0f; //shearX,
+        code[3] = rand.nextInt(5); //param,
+        code[4] = new int[]{rand.nextInt(128) + 128, 0, 0}; //color1,
+        code[5] = new int[]{0, 0, 0}; //color2,
+        code[6] = ((rand.nextFloat() * 2.0f) + 0.5f); //eLife,
+        code[7] = ((rand.nextFloat() * 1.25f) + 5.0f) * 60.0f; //eRepro,
+        code[8] = ((rand.nextFloat() * 10.5f) + 20.0f) * 60.0f; //eMax,
+        code[9] = (int) (((rand.nextFloat() * 5.0f) + 120.0f) * 60.0f); //expectedAge,
+        code[10] = (int) (((rand.nextFloat() * 2.0f) + 30.0f) * 60.0f); //adultAge
+        code[11] = 50.0f + (rand.nextFloat() * 50.0f); //vision
+        code[12] = (float) ((rand.nextGaussian() * 0.1) + 1.5f); //fSep
+        code[13] = (float) ((rand.nextGaussian() * 0.1) + 1.0f); //fAli
+        code[14] = (float) ((rand.nextGaussian() * 0.1) + 1.0f); //fCoh
+        code[15] = (float) ((rand.nextGaussian() * 0.05) + 0.15f); //maxforce
+        code[16] = (float) ((rand.nextGaussian() * 0.25) + 4.0f); //maxspeed
         return code;
     }
 

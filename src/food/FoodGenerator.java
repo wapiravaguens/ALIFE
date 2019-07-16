@@ -76,18 +76,20 @@ public class FoodGenerator {
         // North
         plants.add(LSystem.plant1(sk, (Sketch.width_ / 4), (Sketch.height_ / 4), winter));
         plants.add(LSystem.plant2(sk, (3 * Sketch.width_ / 4), (Sketch.height_ / 4), winter));
+        plants.add(LSystem.plant3(sk, (Sketch.width_ / 2), (Sketch.height_ / 4), winter));
 
         // South
         plants.add(LSystem.plant3(sk, (Sketch.width_ / 4), (3 * Sketch.height_ / 4), summer));
         plants.add(LSystem.plant4(sk, (3 * Sketch.width_ / 4), (3 * Sketch.height_ / 4), summer));
+        plants.add(LSystem.plant1(sk, (Sketch.width_ / 2), (3 * Sketch.height_ / 4), summer));
         
 //        for (LSystem plant : plants) {
 //            System.out.println(plant.sentence.length());
 //        }
 
         int n = 5;
-        float offSetX = (Food.size + 5);
-        float offSetY = (Food.size + 5);
+        float offSetX = (Food.size + 10);
+        float offSetY = (Food.size + 10);
 
         // Create Food
         for (LSystem plant : plants) {

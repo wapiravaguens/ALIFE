@@ -36,7 +36,7 @@ public class BoidPrey extends Prey {
         PVector coh = cohesion(qPreys);   // Cohesion  
         
         avop.mult(100.0f);
-        food.mult(fFood);
+        food.mult(fFood).limit(gen.maxforce * 3);
         sep.mult(gen.fSep);
         ali.mult(gen.fAli);
         coh.mult(gen.fCoh);
@@ -68,7 +68,7 @@ public class BoidPrey extends Prey {
         for (Point p : predators) {
             Predator predator = (Predator) p.obj;
             float d = PVector.dist(position, predator.position);
-            if ((d > 0) && (d < gen.vision * 2)) {
+            if ((d > 0) && (d < gen.vision)) {
                 PVector steer = new PVector(); // creates vector for steering
                 steer.set(PVector.sub(position, predator.position)); // steering vector points away from
                 steer.mult(1 / PApplet.sq(PVector.dist(position, predator.position)));

@@ -48,8 +48,8 @@ public class Charts extends PApplet {
         buttons.add(new Button(this, 325, 650, 1, "Metabolismo"));
         buttons.add(new Button(this, 525, 650, 1, "Tamaño Adulto"));
         buttons.add(new Button(this, 125, 725, 1, "Visión"));
-        buttons.add(new Button(this, 325, 725, 1, "Velocidad"));
-        buttons.add(new Button(this, 525, 725, 1, "Aceleración"));
+        buttons.add(new Button(this, 325, 725, 1, "Velocidad Máxima"));
+        buttons.add(new Button(this, 525, 725, 1, "Aceleración Máxima"));
     }
 
     @Override

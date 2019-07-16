@@ -13,6 +13,7 @@ public class Sketch extends PApplet {
     public static boolean showEnergy;
     public static boolean showVision;
     public static boolean showTime;
+    public static boolean pause;
     public static int speed;
     public static long time;
     public static float zoom;
@@ -33,11 +34,12 @@ public class Sketch extends PApplet {
         frameRate(60);
 
         //Globals
-        showFrameRate = true;
+        showFrameRate = false;
         showPreyPredator = true;
         showEnergy = false;
         showVision = false;
-        showTime = true;
+        showTime = false;
+        pause = false;
         speed = 1;
         time = 0;
         zoom = 1.0f;
@@ -51,22 +53,25 @@ public class Sketch extends PApplet {
 
     @Override
     public void draw() {
-        background(255);
-        image(background, 0, 0);
+        if (!pause) {
+            background(255);
+            image(background, 0, 0);
 
-        for (int i = 0; i < speed; i++) {
-            aquarium.update();
-            time++;
+
+            for (int i = 0; i < speed; i++) {
+                aquarium.update();
+                time++;
+            }
+
+            pushMatrix();
+            translate(mouseX, mouseY);
+            scale(1.0f / zoom);
+            translate(-mouseX, -mouseY);
+            aquarium.render();
+            popMatrix();
+
+            info();
         }
-
-        pushMatrix();
-        translate(mouseX, mouseY);
-        scale(1.0f / zoom);
-        translate(-mouseX, -mouseY);
-        aquarium.render();
-        popMatrix();
-
-        info();
     }
 
     @Override
@@ -91,6 +96,9 @@ public class Sketch extends PApplet {
         }
         if (key == 't') {
             showTime = !showTime;
+        }
+        if (key == ' ') {
+            pause = !pause;
         }
     }
 

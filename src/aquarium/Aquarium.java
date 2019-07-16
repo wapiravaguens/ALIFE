@@ -45,12 +45,13 @@ public class Aquarium {
     }
 
     public void make() {
-        for (int i = 0; i < 150; i++) {
-//            preys.add(new BoidPrey(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PreyGenotype.random()));
+        for (int i = 0; i < 125; i++) {
+            //preys.add(new BoidPrey(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PreyGenotype.random()));
             preys.add(new BoidPrey(sk, Sketch.width_ / 2, Sketch.height_ / 2, PreyGenotype.random()));
         }
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 25; i++) {
             predators.add(new BoidPredator(sk, sk.random(0, Sketch.width_), sk.random(0, Sketch.height_), PredatorGenotype.random()));
+            //predators.add(new BoidPredator(sk, 3*Sketch.width_ / 4, Sketch.height_ / 2, PredatorGenotype.random()));
         }
     }
 
