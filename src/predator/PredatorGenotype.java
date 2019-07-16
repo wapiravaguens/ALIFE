@@ -120,8 +120,8 @@ public class PredatorGenotype {
     public static Object[] randomValues() {
         Random rand = new Random();
         Object[] code = new Object[17];
-        code[0] = 15.0f + (rand.nextFloat() * 5.0f); //initSize,
-        code[1] = 50.0f - (rand.nextFloat() * 30.0f); //finalSize,
+        code[0] = 25.0f + (rand.nextFloat() * 5.0f); //initSize,
+        code[1] = 60.0f - (rand.nextFloat() * 30.0f); //finalSize,
         code[2] = rand.nextFloat() * 30.0f; //shearX,
         code[3] = rand.nextInt(5); //param,
         code[4] = new int[]{rand.nextInt(128) + 128, 0, 0}; //color1,
