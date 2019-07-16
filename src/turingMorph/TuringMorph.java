@@ -18,7 +18,7 @@ public class TuringMorph {
     {0.16f, 0.08f, 0.05f, 0.065f}
     };
 
-    public TuringMorph(PApplet sk, int rows, int cols, int n) {
+    public TuringMorph(PApplet sk, int rows, int cols) {
         this.sk = sk;
         this.rows = rows;
         this.cols = cols;
@@ -27,7 +27,7 @@ public class TuringMorph {
         this.B = new float[params.length][rows][cols];
 
         generateInitialState();
-        compute(n);
+        //compute(n);
     }
 
     public void paint(PImage img, int[] color1, int[] color2, int k) {

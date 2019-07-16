@@ -29,7 +29,7 @@ public class Prey {
         this.sk = sk;
         this.gen = gen;
         this.img = sk.loadImage("prey.png");
-        Aquarium.turingMorph.paint(img, gen.color1, gen.color2, gen.param);
+        Sketch.turingMorph.paint(img, gen.color1, gen.color2, gen.param);
 
         // Life
         this.age = 0;

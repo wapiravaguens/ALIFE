@@ -4,6 +4,7 @@ import charts.Charts;
 import aquarium.Aquarium;
 import processing.core.*;
 import processing.event.MouseEvent;
+import turingMorph.TuringMorph;
 
 public class Sketch extends PApplet {
 
@@ -20,8 +21,11 @@ public class Sketch extends PApplet {
     public static int width_;
     public static int height_;
 
+    
     public PImage background;
     public Aquarium aquarium;
+    public static TuringMorph turingMorph;
+    public boolean load = false;
 
     @Override
     public void settings() {
@@ -43,20 +47,28 @@ public class Sketch extends PApplet {
         speed = 1;
         time = 0;
         zoom = 1.0f;
-        width_ = (int) (width * zoom);
-        height_ = (int) (height * zoom);
+        width_ = width;
+        height_ = height;
 
         background = loadImage("background.jpg");
         background.resize(width_, height_);
-        aquarium = new Aquarium(this);
+        this.turingMorph = new TuringMorph(this, 75, 75);
+        thread("load");
+    }
+
+    public void load() {
+        turingMorph.compute(1500);
+        synchronized (this) {
+            aquarium = new Aquarium(this);
+            load = true;
+        }
     }
 
     @Override
     public void draw() {
-        if (!pause) {
+        if (!pause && load) {
             background(255);
             image(background, 0, 0);
-
 
             for (int i = 0; i < speed; i++) {
                 aquarium.update();
@@ -107,7 +119,7 @@ public class Sketch extends PApplet {
         float e = event.getCount();
         zoom = zoom + e / 50;
         zoom = min(1.0f, zoom);
-        zoom = max(0.52f ,zoom);
+        zoom = max(0.52f, zoom);
     }
 
     public static void main(String[] args) {

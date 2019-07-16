@@ -7,7 +7,6 @@ import prey.*;
 import predator.*;
 import processing.core.*;
 import sketch.Sketch;
-import turingMorph.TuringMorph;
 
 public class Aquarium {
 
@@ -22,13 +21,11 @@ public class Aquarium {
 
     public FoodGenerator foodGenerator;
     public QuadTree qFoodL;
-
-    public static TuringMorph turingMorph;
+    
     public static ArrayList<ArrayList<PVector>> data = new ArrayList<>();
 
     public Aquarium(PApplet sk) {
         this.sk = sk;
-        this.turingMorph = new TuringMorph(sk, 100, 100, 2000);
         limit = new Rectangle(Sketch.width_ / 2, Sketch.height_ / 2, Sketch.width_, Sketch.height_);
 
         // Chart data arrays initialization
