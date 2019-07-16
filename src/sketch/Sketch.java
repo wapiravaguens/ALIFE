@@ -17,11 +17,11 @@ public class Sketch extends PApplet {
     public static boolean pause;
     public static int speed;
     public static long time;
+    public static float maxZoom;
     public static float zoom;
     public static int width_;
     public static int height_;
 
-    
     public PImage background;
     public Aquarium aquarium;
     public static TuringMorph turingMorph;
@@ -46,9 +46,10 @@ public class Sketch extends PApplet {
         pause = false;
         speed = 1;
         time = 0;
-        zoom = 1.0f;
-        width_ = width;
-        height_ = height;
+        maxZoom = 1.4056f;
+        zoom = maxZoom;
+        width_ = (int) (width * maxZoom);
+        height_ = (int) (height * maxZoom);
 
         background = loadImage("background.jpg");
         background.resize(width_, height_);
@@ -76,9 +77,9 @@ public class Sketch extends PApplet {
             }
 
             pushMatrix();
-            translate(mouseX, mouseY);
+            //translate(mouseX, mouseY);
             scale(1.0f / zoom);
-            translate(-mouseX, -mouseY);
+            //translate(-mouseX, -mouseY);
             aquarium.render();
             popMatrix();
 
@@ -114,13 +115,13 @@ public class Sketch extends PApplet {
         }
     }
 
-    @Override
-    public void mouseWheel(MouseEvent event) {
-        float e = event.getCount();
-        zoom = zoom + e / 50;
-        zoom = min(1.0f, zoom);
-        zoom = max(0.52f, zoom);
-    }
+//    @Override
+//    public void mouseWheel(MouseEvent event) {
+//        float e = event.getCount();
+//        zoom = zoom + e / 50;
+//        zoom = min(maxZoom, zoom);
+//        zoom = max(0.52f, zoom);
+//    }
 
     public static void main(String[] args) {
         String[] processingArgs = {"ALIFE"};
@@ -133,19 +134,19 @@ public class Sketch extends PApplet {
 
     public void info() {
         pushStyle();
-        textSize(32);
+        textSize(24);
         if (showFrameRate) {
-            text(nf(frameRate, 1, 2), 10, 40);
+            text(nf(frameRate, 1, 2), 10, 30);
         }
         if (showTime) {
-            text(time / 60 + "s", 10, height - 15); //change
+            text(time / 60 + "s", 10, height - 12);
         }
         if (showPreyPredator) {
-            text("Predators: " + aquarium.predators.size(), width - 260, 40);
-            text("Preys: " + aquarium.preys.size(), width - 260, 80);
+            text("Predators: " + aquarium.predators.size(), width - 180, 30);
+            text("Preys: " + aquarium.preys.size(), width - 180, 60);
         }
         if (speed > 1) {
-            text(speed + "X", width - 90, height - 15);
+            text(speed + "X", width - 70, height - 12);
         }
         popStyle();
     }

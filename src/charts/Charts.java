@@ -15,7 +15,7 @@ public class Charts extends PApplet {
 
     @Override
     public void settings() {
-        size(800, 800);
+        size(700, 600);
     }
 
     @Override
@@ -44,12 +44,12 @@ public class Charts extends PApplet {
         lineChartPreysPredators.setLineColour(color(255, 0, 0, 100));
 
         // Buttons
-        buttons.add(new Button(this, 125, 650, 1, "Energía Máxima"));
-        buttons.add(new Button(this, 325, 650, 1, "Metabolismo"));
-        buttons.add(new Button(this, 525, 650, 1, "Tamaño Adulto"));
-        buttons.add(new Button(this, 125, 725, 1, "Visión"));
-        buttons.add(new Button(this, 325, 725, 1, "Velocidad Máxima"));
-        buttons.add(new Button(this, 525, 725, 1, "Aceleración Máxima"));
+        buttons.add(new Button(this, 75, 450, 1, "Energía Máxima"));
+        buttons.add(new Button(this, 275, 450, 1, "Metabolismo"));
+        buttons.add(new Button(this, 475, 450, 1, "Tamaño Adulto"));
+        buttons.add(new Button(this, 75, 525, 1, "Visión"));
+        buttons.add(new Button(this, 275, 525, 1, "Velocidad Máxima"));
+        buttons.add(new Button(this, 475, 525, 1, "Aceleración Máxima"));
     }
 
     @Override
@@ -68,10 +68,10 @@ public class Charts extends PApplet {
         textSize(15);
         fill(120);
         if (flag) {
-            lineChartPreys.draw(50, 100, 700, 500);
+            lineChartPreys.draw(50, 100, 600, 300);
             fill(0, 0, 255);
         } else {
-            lineChartPreysPredators.draw(50, 100, 700, 500);
+            lineChartPreysPredators.draw(50, 100, 600, 300);
             fill(255, 0, 0);
         }
         
