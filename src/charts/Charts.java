@@ -78,7 +78,7 @@ public class Charts extends PApplet {
         // Draw Title
         textAlign(CENTER, CENTER);
         textSize(25);
-        text(flag ? "Presa" : "Predador", width / 2, 20);
+        text(flag ? "Presa" : "Depredador", width / 2, 20);
         text(buttons.get(selected).text, width / 2, 50);
 
         // Draw Buttons

@@ -46,13 +46,13 @@ public class Sketch extends PApplet {
         pause = false;
         speed = 1;
         time = 0;
-        maxZoom = 1.4056f;
+        maxZoom = 1920.0f/width;
         zoom = maxZoom;
         width_ = (int) (width * maxZoom);
         height_ = (int) (height * maxZoom);
 
         background = loadImage("background.jpg");
-        background.resize(width_, height_);
+        background.resize(width, height);
         this.turingMorph = new TuringMorph(this, 75, 75);
         thread("load");
     }
